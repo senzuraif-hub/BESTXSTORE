@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BESTxShop — Premium Electronic Products</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #fafafa; color: #0a0a14; line-height: 1.6;
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
+        }
+        .navbar {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .navbar-inner {
+            max-width: 1280px; margin: 0 auto; display: flex;
+            align-items: center; justify-content: space-between;
+            height: 72px; padding: 0 24px; gap: 20px;
+        }
+        .logo {
+            font-size: 1.15rem; font-weight: 800; letter-spacing: -0.5px;
+            color: #0a0a14; text-decoration: none;
+            display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+        }
+        .logo-mark {
+            width: 34px; height: 34px;
+            background: linear-gradient(135deg,#ff6a00,#ff3d00);
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; color: #fff; font-size: 1rem; font-weight: 900;
+        }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
+        .nav-link {
+            color: #4b5563; text-decoration: none; font-size: 0.85rem;
+            font-weight: 500; transition: color 0.2s; white-space: nowrap;
+        }
+        .nav-link:hover { color: #ff6a00; }
+        .btn-nav {
+            background: #0a0a14; color: #fff; text-decoration: none;
+            padding: 10px 22px; border-radius: 100px; font-size: 0.85rem;
+            font-weight: 600; transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-nav:hover { background: #ff6a00; transform: translateY(-1px); }
+        .lang-menu { position: relative; }
+        .lang-toggle {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 16px; border-radius: 100px;
+            background: #f3f4f6; border: 1px solid #e5e7eb;
+            font-family: inherit; font-size: 0.82rem; font-weight: 600;
+            color: #0a0a14; cursor: pointer; transition: all 0.2s;
+        }
+        .lang-toggle:hover { background: #e5e7eb; }
+        .lang-toggle .flag { font-size: 1.05rem; line-height: 1; }
+        .lang-toggle .chevron { transition: transform 0.25s; width: 14px; height: 14px; }
+        .lang-menu.open .lang-toggle .chevron { transform: rotate(180deg); }
+        .lang-dropdown {
+            position: absolute; top: calc(100% + 10px); right: 0;
+            background: #fff; border-radius: 16px; padding: 8px;
+            min-width: 190px; box-shadow: 0 20px 50px rgba(10,10,20,0.15),
+                        0 0 0 1px rgba(0,0,0,0.05);
+            opacity: 0; visibility: hidden; transform: translateY(-8px);
+            transition: all 0.25s cubic-bezier(0.22,1,0.36,1); z-index: 2000;
+        }
+        .lang-menu.open .lang-dropdown {
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .lang-option {
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 14px; border-radius: 10px; border: none;
+            background: transparent; font-family: inherit;
+            font-size: 0.88rem; font-weight: 500; color: #374151;
+            cursor: pointer; transition: all 0.15s; width: 100%; text-align: left;
+        }
+        .lang-option:hover { background: #f9fafb; color: #0a0a14; }
+        .lang-option.active { background: #fff5ed; color: #ff6a00; font-weight: 700; }
+        .lang-option .flag { font-size: 1.2rem; line-height: 1; }
+        .lang-option .check { margin-left: auto; color: #ff6a00; font-weight: 800; }
+        .shop-intro { max-width: 1280px; margin: 0 auto; padding: 72px 24px 0; text-align: center; }
+        .shop-intro h1 {
+            font-size: clamp(2rem,4vw,2.8rem); font-weight: 800;
+            letter-spacing: -1.5px; line-height: 1.1; color: #0a0a14; margin-bottom: 16px;
+        }
+        .shop-intro p { font-size: 1.05rem; color: #6b7280; max-width: 560px; margin: 0 auto; }
+        .products-overview { max-width: 1280px; margin: 0 auto; padding: 64px 24px 32px; }
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .overview-card {
+            background: #fff; border: 1px solid #f0f0f5; border-radius: 24px;
+            overflow: hidden; color: inherit; transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+            display: flex; flex-direction: column; cursor: pointer;
+        }
+        .overview-card:hover {
+            border-color: #ff6a00; transform: translateY(-6px);
+            box-shadow: 0 24px 50px rgba(255,106,0,0.12);
+        }
+        .overview-visual {
+            position: relative;
+            background: linear-gradient(160deg,#fff5ed 0%,#ffe8d6 100%);
+            padding: 32px; display: flex; align-items: center;
+            justify-content: center; aspect-ratio: 4/3; overflow: hidden;
+        }
+        .overview-visual::before {
+            content: ''; position: absolute; width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(255,106,0,0.15) 0%, transparent 70%);
+            border-radius: 50%; top: 15%; left: 15%; filter: blur(16px);
+        }
+        .overview-visual img {
+            width: 100%; max-width: 220px; height: auto; max-height: 180px;
+            object-fit: contain; position: relative; z-index: 1;
+            filter: drop-shadow(0 15px 30px rgba(10,10,20,0.15));
+            transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
+        }
+        .overview-card:hover .overview-visual img { transform: scale(1.06) rotate(-1deg); }
+        .overview-tag {
+            position: absolute; top: 16px; left: 16px;
+            background: #ff3d00; color: #fff; padding: 5px 12px;
+            border-radius: 100px; font-size: 0.62rem; font-weight: 700;
+            letter-spacing: 1.2px; text-transform: uppercase; z-index: 2;
+        }
+        .overview-body { padding: 24px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+        .overview-category {
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: #ff6a00; margin-bottom: 6px;
+        }
+        .overview-body h3 {
+            font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px;
+            color: #0a0a14; margin-bottom: 8px;
+        }
+        .overview-body p {
+            font-size: 0.85rem; color: #6b7280; line-height: 1.6;
+            margin-bottom: 18px; flex: 1;
+        }
+        .overview-price {
+            display: flex; align-items: baseline; gap: 10px;
+            padding-top: 18px; border-top: 1px solid #f0f0f5;
+            margin-top: auto; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .overview-price .price-now {
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px;
+            color: #0a0a14; line-height: 1;
+        }
+        .overview-price .price-was {
+            font-size: 0.85rem; color: #9ca3af;
+            text-decoration: line-through; font-weight: 500;
+        }
+        .overview-price .price-tag {
+            margin-left: auto; background: #fee2e2; color: #dc2626;
+            padding: 4px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 700;
+        }
+        .overview-more-btn {
+            width: 100%; background: #0a0a14; color: #fff; border: none;
+            padding: 14px 20px; border-radius: 100px; font-family: inherit;
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .overview-more-btn:hover {
+            background: #ff6a00; transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255,106,0,0.3);
+        }
+        .overview-more-btn svg { transition: transform 0.25s; }
+        .overview-more-btn:hover svg { transform: translateX(4px); }
+        .product { max-width: 1280px; margin: 0 auto; padding: 64px 24px 96px; }
+        .product + .product { border-top: 1px solid #f0f0f5; }
+        .breadcrumb {
+            font-size: 0.8rem; color: #9ca3af; margin-bottom: 40px; font-weight: 500;
+        }
+        .breadcrumb span { color: #0a0a14; font-weight: 600; }
+        .product-grid {
+            display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: center;
+        }
+        .product-visual {
+            position: relative;
+            background: linear-gradient(160deg,#fff5ed 0%,#ffe8d6 100%);
+            border-radius: 32px; padding: 48px; display: flex;
+            align-items: center; justify-content: center;
+            aspect-ratio: 1/1; overflow: hidden;
+        }
+        .product-visual::before {
+            content: ''; position: absolute; width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(255,106,0,0.18) 0%, transparent 70%);
+            border-radius: 50%; top: 15%; left: 15%; filter: blur(20px);
+        }
+        .product-visual img {
+            width: 100%; max-width: 460px; height: auto; max-height: 460px;
+            object-fit: contain; position: relative; z-index: 1;
+            filter: drop-shadow(0 30px 50px rgba(10,10,20,0.15));
+            transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+        }
+        .product-visual:hover img { transform: scale(1.05) rotate(-1.5deg); }
+        .product-tag {
+            position: absolute; top: 28px; left: 28px;
+            background: #ff3d00; color: #fff; padding: 8px 16px;
+            border-radius: 100px; font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; z-index: 2;
+        }
+        .product-info { display: flex; flex-direction: column; }
+        .product-eyebrow {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px;
+            text-transform: uppercase; color: #ff6a00; margin-bottom: 16px;
+        }
+        .product-title {
+            font-size: clamp(2.2rem,4vw,3rem); font-weight: 800;
+            letter-spacing: -1.5px; line-height: 1.05; color: #0a0a14; margin-bottom: 16px;
+        }
+        .product-subtitle {
+            font-size: 1.05rem; color: #6b7280; margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        .rating-row { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+        .stars { color: #f59e0b; font-size: 1rem; letter-spacing: 2px; }
+        .rating-text { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
+        .rating-text strong { color: #0a0a14; font-weight: 700; }
+        .price-block {
+            display: flex; align-items: baseline; gap: 16px;
+            margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .price-main {
+            font-size: 3rem; font-weight: 800; letter-spacing: -2px;
+            color: #0a0a14; line-height: 1;
+        }
+        .price-old {
+            font-size: 1.3rem; color: #9ca3af;
+            text-decoration: line-through; font-weight: 500;
+        }
+        .price-badge {
+            background: #fee2e2; color: #dc2626; padding: 5px 12px;
+            border-radius: 100px; font-size: 0.78rem; font-weight: 700;
+        }
+        .price-note { font-size: 0.82rem; color: #9ca3af; margin-bottom: 20px; font-weight: 500; }
+        .product-note {
+            font-size: 0.7rem; color: #b8bcc4; line-height: 1.5;
+            margin-bottom: 24px; opacity: 0.85;
+        }
+        .benefits {
+            display: flex; flex-direction: column; gap: 14px;
+            margin-bottom: 40px; padding: 24px; background: #fff;
+            border-radius: 20px; border: 1px solid #f0f0f5;
+        }
+        .benefit {
+            display: flex; align-items: center; gap: 14px;
+            font-size: 0.9rem; color: #374151; font-weight: 500;
+        }
+        .benefit-icon {
+            width: 34px; height: 34px; flex-shrink: 0;
+            background: #fff5ed; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; color: #ff6a00;
+        }
+        .benefit-icon svg { width: 17px; height: 17px; }
+        .btn-buy {
+            width: 100%; background: #0a0a14; color: #fff; border: none;
+            padding: 22px 40px; border-radius: 100px; font-family: inherit;
+            font-size: 1.05rem; font-weight: 700; cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.22,1,0.36,1);
+            box-shadow: 0 10px 30px rgba(10,10,20,0.15);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-buy:hover {
+            background: #ff6a00; transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(255,106,0,0.35);
+        }
+        .btn-buy .arrow { transition: transform 0.25s; }
+        .btn-buy:hover .arrow { transform: translateX(4px); }
+        .secure-note {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; margin-top: 18px; font-size: 0.8rem;
+            color: #9ca3af; font-weight: 500;
+        }
+        .secure-note svg { width: 14px; height: 14px; }
+        .product-params {
+            margin-top: 80px; padding-top: 64px; border-top: 1px solid #f0f0f5;
+        }
+        .product-params-header { text-align: center; margin-bottom: 40px; }
+        .product-params-header h3 {
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px;
+            color: #0a0a14; margin-bottom: 8px;
+        }
+        .product-params-header p { font-size: 0.9rem; color: #6b7280; }
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+        }
+        .param-card {
+            background: #fff; border: 1px solid #f0f0f5;
+            border-radius: 18px; padding: 22px 20px; text-align: center;
+            transition: all 0.25s;
+        }
+        .param-card:hover {
+            border-color: #ff6a00; transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,106,0,0.08);
+        }
+        .param-card .param-value {
+            font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px;
+            color: #0a0a14; margin-bottom: 4px; line-height: 1.1;
+        }
+        .param-card .param-label {
+            font-size: 0.74rem; color: #6b7280; font-weight: 600;
+            letter-spacing: 0.3px; text-transform: uppercase;
+        }
+        .description {
+            background: #fff; padding: 96px 24px;
+            border-top: 1px solid #f0f0f5; border-bottom: 1px solid #f0f0f5;
+        }
+        .description-inner { max-width: 780px; margin: 0 auto; }
+        .description h2 {
+            font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800;
+            letter-spacing: -1px; margin-bottom: 24px; color: #0a0a14;
+        }
+        .description p {
+            font-size: 1.02rem; color: #4b5563; line-height: 1.8; margin-bottom: 20px;
+        }
+        .description strong { color: #0a0a14; font-weight: 700; }
+        .final-cta {
+            max-width: 780px; margin: 0 auto; padding: 96px 24px; text-align: center;
+        }
+        .final-cta h2 {
+            font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 800;
+            letter-spacing: -1px; margin-bottom: 12px;
+        }
+        .final-cta p { font-size: 1rem; color: #6b7280; margin-bottom: 32px; }
+        .final-cta .btn-buy { max-width: 400px; margin: 0 auto; }
+        .footer { background: #0a0a14; color: #9ca3af; padding: 56px 24px 28px; }
+        .footer-inner {
+            max-width: 1280px; margin: 0 auto;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 24px;
+        }
+        .footer-logo {
+            display: flex; align-items: center; gap: 8px;
+            color: #fff; font-weight: 800; font-size: 1rem;
+        }
+        .footer-logo .logo-mark { width: 26px; height: 26px; font-size: 0.8rem; }
+        .footer-links {
+            display: flex; gap: 28px; list-style: none; flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #9ca3af; text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; transition: color 0.2s;
+        }
+        .footer-links a:hover { color: #fff; }
+        .footer-copy {
+            max-width: 1280px; margin: 40px auto 0; padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.78rem; color: #6b7280; text-align: center;
+        }
+        .disclaimer { max-width: 1280px; margin: 0 auto; padding: 16px 24px 32px; text-align: center; }
+        .disclaimer p {
+            font-size: 0.5rem; color: #d1d5db; line-height: 1.5; opacity: 0.7;
+        }
+        .detail-modal-overlay {
+            position: fixed; inset: 0; background: rgba(10,10,20,0.75);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 1900; display: none; align-items: flex-start;
+            justify-content: center; padding: 40px 24px; opacity: 0;
+            transition: opacity 0.3s; overflow-y: auto;
+        }
+        .detail-modal-overlay.active { display: flex; opacity: 1; }
+        .detail-modal {
+            background: #fff; border-radius: 32px; width: 100%;
+            max-width: 1080px; padding: 56px; transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+            position: relative; margin: auto;
+        }
+        .detail-modal-overlay.active .detail-modal { transform: scale(1); }
+        .detail-modal-close {
+            position: absolute; top: 24px; right: 24px; width: 42px; height: 42px;
+            border: none; background: #f3f4f6; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center;
+            justify-content: center; color: #6b7280; font-size: 1.3rem;
+            transition: all 0.2s; z-index: 10;
+        }
+        .detail-modal-close:hover { background: #e5e7eb; color: #0a0a14; transform: rotate(90deg); }
+        .detail-modal-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+            align-items: center; margin-bottom: 56px;
+        }
+        .detail-modal-visual {
+            position: relative;
+            background: linear-gradient(160deg,#fff5ed 0%,#ffe8d6 100%);
+            border-radius: 28px; padding: 48px; display: flex;
+            align-items: center; justify-content: center;
+            aspect-ratio: 1/1; overflow: hidden;
+        }
+        .detail-modal-visual::before {
+            content: ''; position: absolute; width: 70%; height: 70%;
+            background: radial-gradient(circle, rgba(255,106,0,0.18) 0%, transparent 70%);
+            border-radius: 50%; top: 15%; left: 15%; filter: blur(20px);
+        }
+        .detail-modal-visual img {
+            width: 100%; max-width: 340px; height: auto; max-height: 340px;
+            object-fit: contain; position: relative; z-index: 1;
+            filter: drop-shadow(0 25px 40px rgba(10,10,20,0.15));
+        }
+        .detail-modal-info { display: flex; flex-direction: column; }
+        .detail-modal-category {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px;
+            text-transform: uppercase; color: #ff6a00; margin-bottom: 14px;
+        }
+        .detail-modal-info h2 {
+            font-size: clamp(1.8rem,3.2vw,2.4rem); font-weight: 800;
+            letter-spacing: -1.2px; line-height: 1.05; margin-bottom: 14px;
+        }
+        .detail-modal-info .detail-subtitle {
+            font-size: 1rem; color: #6b7280; margin-bottom: 24px; line-height: 1.6;
+        }
+        .detail-modal-rating {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 24px; font-size: 0.85rem; color: #6b7280;
+        }
+        .detail-modal-rating .detail-stars {
+            color: #f59e0b; font-size: 0.95rem; letter-spacing: 2px;
+        }
+        .detail-modal-rating strong { color: #0a0a14; font-weight: 700; }
+        .detail-modal-price {
+            display: flex; align-items: baseline; gap: 14px;
+            margin-bottom: 8px; flex-wrap: wrap;
+        }
+        .detail-modal-price .detail-price-now {
+            font-size: 2.4rem; font-weight: 800; letter-spacing: -1.5px; line-height: 1;
+        }
+        .detail-modal-price .detail-price-was {
+            font-size: 1.1rem; color: #9ca3af;
+            text-decoration: line-through; font-weight: 500;
+        }
+        .detail-modal-price .detail-price-tag {
+            background: #fee2e2; color: #dc2626; padding: 5px 12px;
+            border-radius: 100px; font-size: 0.75rem; font-weight: 700;
+        }
+        .detail-modal-pricenote {
+            font-size: 0.8rem; color: #9ca3af; margin-bottom: 24px; font-weight: 500;
+        }
+        .detail-modal-benefits {
+            display: flex; flex-direction: column; gap: 12px;
+            margin-bottom: 28px; padding: 20px; background: #fafafa;
+            border-radius: 16px; border: 1px solid #f0f0f5;
+        }
+        .detail-modal-benefit {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.85rem; color: #374151; font-weight: 500;
+        }
+        .detail-modal-benefit-icon {
+            width: 30px; height: 30px; flex-shrink: 0;
+            background: #fff5ed; border-radius: 9px;
+            display: flex; align-items: center; justify-content: center; color: #ff6a00;
+        }
+        .detail-modal-benefit-icon svg { width: 15px; height: 15px; }
+        .detail-modal-params { padding-top: 40px; border-top: 1px solid #f0f0f5; }
+        .detail-modal-params h3 {
+            font-size: 1.15rem; font-weight: 800; letter-spacing: -0.4px;
+            margin-bottom: 20px; text-align: center;
+        }
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(10,10,20,0.75);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 2000; display: none; align-items: flex-start;
+            justify-content: center; padding: 40px 24px; opacity: 0;
+            transition: opacity 0.3s; overflow-y: auto;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal {
+            background: #fff; border-radius: 28px; width: 100%;
+            max-width: 640px; padding: 44px; transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+            position: relative; margin: auto;
+        }
+        .modal-overlay.active .modal { transform: scale(1); }
+        .modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 28px;
+        }
+        .modal-header h3 {
+            font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;
+        }
+        .modal-close {
+            width: 36px; height: 36px; border: none;
+            background: #f3f4f6; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            color: #6b7280; font-size: 1.2rem; transition: all 0.2s;
+        }
+        .modal-close:hover { background: #e5e7eb; color: #0a0a14; }
+        .order-summary {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 22px; background: #fff5ed; border-radius: 16px;
+            margin-bottom: 28px; border: 1px solid #ffe0c7;
+        }
+        .order-summary .label {
+            font-size: 0.82rem; color: #9a6b4a; font-weight: 500;
+        }
+        .order-summary .label strong {
+            display: block; color: #0a0a14; font-size: 1rem;
+            font-weight: 700; margin-top: 2px;
+        }
+        .order-summary .price {
+            font-size: 1.45rem; font-weight: 800; color: #0a0a14;
+            letter-spacing: -0.5px; text-align: right;
+        }
+        .order-summary .price small {
+            display: block; font-size: 0.72rem; font-weight: 600;
+            color: #16a34a; margin-top: 2px;
+        }
+        .order-summary .price small.strike {
+            color: #9ca3af; text-decoration: line-through; font-weight: 500;
+        }
+        .form-section-title {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: #9ca3af;
+            margin-bottom: 14px; margin-top: 8px;
+        }
+        .form-row {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 14px; margin-bottom: 14px;
+        }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full { grid-column: 1/-1; }
+        .form-group label {
+            font-size: 0.78rem; font-weight: 600; color: #4b5563;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select {
+            font-family: inherit; font-size: 0.92rem;
+            padding: 13px 16px; border: 1.5px solid #e5e7eb;
+            border-radius: 12px; background: #fafafa; color: #0a0a14;
+            transition: all 0.2s; outline: none; width: 100%;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #ff6a00; background: #fff;
+            box-shadow: 0 0 0 4px rgba(255,106,0,0.1);
+        }
+        .form-group input::placeholder { color: #b0b4bc; }
+        .discount-box {
+            margin-bottom: 22px; padding: 18px 20px; background: #f7f8fc;
+            border: 1.5px dashed #d1d5db; border-radius: 16px;
+            transition: all 0.25s;
+        }
+        .discount-box.applied {
+            background: #f0fdf4; border-color: #86efac; border-style: solid;
+        }
+        .discount-box .discount-title {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase; color: #4b5563; margin-bottom: 12px;
+        }
+        .discount-box.applied .discount-title { color: #15803d; }
+        .discount-box .discount-title svg { width: 16px; height: 16px; color: #ff6a00; }
+        .discount-box.applied .discount-title svg { color: #16a34a; }
+        .discount-input-row { display: flex; gap: 8px; }
+        .discount-input-row input {
+            flex: 1; font-family: inherit; font-size: 0.9rem;
+            padding: 12px 14px; border: 1.5px solid #e5e7eb;
+            border-radius: 10px; background: #fff; color: #0a0a14;
+            outline: none; transition: all 0.2s; text-transform: uppercase;
+            font-weight: 600; letter-spacing: 0.5px;
+        }
+        .discount-input-row input:focus {
+            border-color: #ff6a00;
+            box-shadow: 0 0 0 3px rgba(255,106,0,0.1);
+        }
+        .discount-input-row input:disabled {
+            background: #f0fdf4; border-color: #86efac; color: #15803d;
+        }
+        .discount-input-row button {
+            font-family: inherit; font-size: 0.85rem; font-weight: 700;
+            padding: 12px 22px; border: none; background: #0a0a14;
+            color: #fff; border-radius: 10px; cursor: pointer;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .discount-input-row button:hover:not(:disabled) { background: #ff6a00; }
+        .discount-input-row button:disabled {
+            background: #16a34a; cursor: default;
+        }
+        .discount-msg {
+            font-size: 0.78rem; font-weight: 600; margin-top: 10px; display: none;
+        }
+        .discount-msg.success { color: #16a34a; display: block; }
+        .discount-msg.error { color: #dc2626; display: block; }
+        .discount-remove {
+            background: none; border: none; color: #dc2626;
+            font-size: 0.75rem; font-weight: 600; cursor: pointer;
+            text-decoration: underline; padding: 0; margin-left: 4px;
+        }
+        #paypal-button-container { min-height: 48px; margin-bottom: 14px; }
+        .paypal-loading {
+            text-align: center; font-size: 0.85rem; color: #9ca3af;
+            font-weight: 500; padding: 16px; background: #f7f8fc;
+            border-radius: 12px;
+        }
+        .paypal-error {
+            text-align: center; font-size: 0.85rem; color: #dc2626;
+            font-weight: 600; padding: 16px; background: #fef2f2;
+            border-radius: 12px;
+        }
+        .modal-disclaimer {
+            font-size: 0.55rem; color: #b0b4bc; line-height: 1.5;
+            margin: 16px 0 20px; padding: 12px 14px;
+            background: #f7f8fc; border-radius: 10px;
+        }
+        .btn-confirm {
+            width: 100%; background: #0a0a14; color: #fff;
+            border: none; padding: 18px; border-radius: 100px;
+            font-family: inherit; font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; text-decoration: none;
+        }
+        .btn-confirm:hover { background: #ff6a00; transform: translateY(-1px); }
+        .success-view { text-align: center; padding: 20px 0; display: none; }
+        .success-view.active { display: block; }
+        .success-icon {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg,#16a34a,#22c55e);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin: 0 auto 24px; color: #fff;
+            animation: successPop 0.5s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes successPop {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .success-icon svg { width: 40px; height: 40px; }
+        .success-view h3 {
+            font-size: 1.6rem; font-weight: 800; letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+        .success-view p {
+            font-size: 0.95rem; color: #6b7280; line-height: 1.7;
+            margin-bottom: 8px;
+        }
+        .success-view .email-highlight { color: #0a0a14; font-weight: 700; }
+        .success-view .digital-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #eff6ff; color: #2563eb; padding: 8px 16px;
+            border-radius: 100px; font-size: 0.8rem; font-weight: 600;
+            margin-top: 20px;
+        }
+        .download-note {
+            font-size: 0.8rem; color: #16a34a; font-weight: 600;
+            background: #f0fdf4; border: 1px solid #bbf7d0;
+            border-radius: 12px; padding: 12px 16px;
+            margin: 22px 0 18px;
+        }
+        .currency-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.72rem; color: #9ca3af; font-weight: 600;
+            background: #f7f8fc; padding: 3px 10px; border-radius: 100px;
+            margin-left: 8px;
+        }
+
+        /* 🆕 TEST ACTIVATION BUTTON (jen pro tebe) */
+        .test-activate-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            background: linear-gradient(135deg, #ff6a00, #ff3d00);
+            color: #fff; border: none; padding: 14px 22px;
+            border-radius: 100px; font-family: inherit;
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255,106,0,0.5);
+            z-index: 99999; display: none; align-items: center; gap: 8px;
+            transition: all 0.25s;
+        }
+        .test-activate-btn.show { display: flex; }
+        .test-activate-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255,106,0,0.6); }
+        .test-activate-btn:disabled { cursor: default; opacity: 0.9; }
+        .test-activate-toast {
+            position: fixed; bottom: 90px; right: 20px;
+            background: #0a0a14; color: #fff; padding: 18px 24px;
+            border-radius: 16px; font-family: inherit; font-size: 0.88rem;
+            max-width: 340px; z-index: 100000; display: none;
+            box-shadow: 0 20px 60px rgba(10,10,20,0.5);
+            line-height: 1.55; font-weight: 500;
+        }
+        .test-activate-toast.show { display: block; animation: slideIn 0.3s ease; }
+        .test-activate-toast.success { background: linear-gradient(135deg,#16a34a,#22c55e); }
+        .test-activate-toast.error { background: linear-gradient(135deg,#dc2626,#ef4444); }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .product-grid { grid-template-columns: 1fr; gap: 40px; }
+            .product { padding: 40px 20px 64px; }
+            .breadcrumb { margin-bottom: 24px; }
+            .product-visual { padding: 32px; border-radius: 24px; }
+            .description { padding: 64px 20px; }
+            .final-cta { padding: 64px 20px; }
+            .nav-link { display: none; }
+            .product-params { margin-top: 56px; padding-top: 48px; }
+            .products-overview { padding: 48px 20px 24px; }
+            .detail-modal { padding: 32px 24px; border-radius: 24px; }
+            .detail-modal-grid { grid-template-columns: 1fr; gap: 32px; margin-bottom: 40px; }
+            .detail-modal-visual { padding: 32px; border-radius: 22px; }
+            .navbar-inner { height: auto; padding: 12px 16px; flex-wrap: wrap; }
+        }
+        @media (max-width: 600px) {
+            .navbar-inner { padding: 10px 12px; }
+            .logo { font-size: 0.95rem; }
+            .btn-nav { padding: 8px 16px; font-size: 0.75rem; }
+            .price-main { font-size: 2.4rem; }
+            .btn-buy { padding: 18px 28px; font-size: 0.98rem; }
+            .modal { padding: 28px 22px; border-radius: 22px; }
+            .modal-overlay { padding: 16px; }
+            .form-row { grid-template-columns: 1fr; }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .modal-header h3 { font-size: 1.25rem; }
+            .shop-intro { padding: 48px 20px 0; }
+            .detail-modal-overlay { padding: 16px; }
+            .detail-modal { padding: 28px 20px; }
+            .detail-modal-close { top: 16px; right: 16px; width: 36px; height: 36px; font-size: 1.1rem; }
+            .test-activate-btn { bottom: 12px; right: 12px; padding: 12px 18px; font-size: 0.8rem; }
+            .test-activate-toast { bottom: 75px; right: 12px; left: 12px; max-width: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="logo">
+                <div class="logo-mark">B</div>
+                BESTxShop
+            </a>
+            <div class="nav-right">
+                <a href="#iphone-17" class="nav-link">iPhone 17</a>
+                <a href="#iphone-16" class="nav-link">iPhone 16</a>
+                <a href="#airpods-4" class="nav-link">AirPods 4</a>
+                <a href="#kukirin-g2" class="nav-link">Kukirin G2</a>
+                <a href="#kukirin-g4" class="nav-link">Kukirin G4</a>
+                <a href="#buy" class="btn-nav" data-i18n="nav_buy">Buy Now</a>
+
+                <div class="lang-menu" id="langMenu">
+                    <button class="lang-toggle" onclick="toggleLangMenu(event)">
+                        <span class="flag" id="currentFlag">🇬🇧</span>
+                        <span id="currentLangLabel">English</span>
+                        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="lang-dropdown">
+                        <button class="lang-option active" onclick="switchLang('en')" data-lang="en">
+                            <span class="flag">🇬🇧</span> English
+                            <span class="check" id="check-en">✓</span>
+                        </button>
+                        <button class="lang-option" onclick="switchLang('cs')" data-lang="cs">
+                            <span class="flag">🇨🇿</span> Čeština
+                            <span class="check" id="check-cs" style="display:none">✓</span>
+                        </button>
+                        <button class="lang-option" onclick="switchLang('es')" data-lang="es">
+                            <span class="flag">🇪🇸</span> Español
+                            <span class="check" id="check-es" style="display:none">✓</span>
+                        </button>
+                        <button class="lang-option" onclick="switchLang('de')" data-lang="de">
+                            <span class="flag">🇩🇪</span> Deutsch
+                            <span class="check" id="check-de" style="display:none">✓</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="shop-intro">
+        <h1 data-i18n="shop_title">Premium Electronic Products</h1>
+        <p data-i18n="shop_subtitle">Carefully curated selection of the best devices from Apple and Kukirin electric scooters.</p>
+    </section>
+
+    <section class="products-overview">
+        <div class="overview-grid">
+
+            <div class="overview-card" onclick="openProductDetail('IP17')">
+                <div class="overview-visual">
+                    <div class="overview-tag" data-i18n="tag_new">New</div>
+                    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-cosmicorange?wid=1200&hei=1200&fmt=p-jpg" alt="iPhone 17"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=iPhone+17';">
+                </div>
+                <div class="overview-body">
+                    <div class="overview-category" data-i18n="cat_smartphone">Smartphone</div>
+                    <h3>iPhone 17</h3>
+                    <p data-i18n="ip17_short">The latest iPhone with A19 chip and 6.3" ProMotion display.</p>
+                    <div class="overview-price">
+                        <span class="price-now" data-price="249">$249</span>
+                        <span class="price-was" data-price="369">$369</span>
+                        <span class="price-tag">−32%</span>
+                    </div>
+                    <button class="overview-more-btn" onclick="event.stopPropagation(); openProductDetail('IP17');">
+                        <span data-i18n="learn_more">Learn More</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overview-card" onclick="openProductDetail('IP16')">
+                <div class="overview-visual">
+                    <div class="overview-tag" data-i18n="tag_bestseller">Bestseller</div>
+                    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=1200&hei=1200&fmt=p-jpg" alt="iPhone 16"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=iPhone+16';">
+                </div>
+                <div class="overview-body">
+                    <div class="overview-category" data-i18n="cat_smartphone">Smartphone</div>
+                    <h3>iPhone 16</h3>
+                    <p data-i18n="ip16_short">Elegant iPhone with A18 chip and 6.1" Super Retina XDR display.</p>
+                    <div class="overview-price">
+                        <span class="price-now" data-price="199">$199</span>
+                        <span class="price-was" data-price="299">$299</span>
+                        <span class="price-tag">−32%</span>
+                    </div>
+                    <button class="overview-more-btn" onclick="event.stopPropagation(); openProductDetail('IP16');">
+                        <span data-i18n="learn_more">Learn More</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overview-card" onclick="openProductDetail('AP4')">
+                <div class="overview-visual">
+                    <div class="overview-tag" data-i18n="tag_topsound">Top Sound</div>
+                    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-4-select-202409?wid=1200&hei=1200&fmt=p-jpg" alt="AirPods 4"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=AirPods+4';">
+                </div>
+                <div class="overview-body">
+                    <div class="overview-category" data-i18n="cat_headphones">Headphones</div>
+                    <h3>AirPods 4</h3>
+                    <p data-i18n="ap4_short">Wireless earbuds with ANC, spatial audio and up to 30h battery life.</p>
+                    <div class="overview-price">
+                        <span class="price-now" data-price="29">$29</span>
+                        <span class="price-was" data-price="59">$59</span>
+                        <span class="price-tag">−54%</span>
+                    </div>
+                    <button class="overview-more-btn" onclick="event.stopPropagation(); openProductDetail('AP4');">
+                        <span data-i18n="learn_more">Learn More</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overview-card" onclick="openProductDetail('KG2')">
+                <div class="overview-visual">
+                    <div class="overview-tag">51% Off</div>
+                    <img src="https://kukirin.global/cdn/shop/files/kukirin-g2-new-main-image_1.webp?crop=center&height=1200&v=1779691026&width=1200" alt="Kukirin G2"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=Kukirin+G2';">
+                </div>
+                <div class="overview-body">
+                    <div class="overview-category" data-i18n="cat_scooter">Electric Scooter</div>
+                    <h3>Kukirin G2</h3>
+                    <p data-i18n="kg2_short">Powerful scooter with 800W motor, 55 km range and 25 km/h top speed.</p>
+                    <div class="overview-price">
+                        <span class="price-now" data-price="55">$55</span>
+                        <span class="price-was" data-price="109">$109</span>
+                        <span class="price-tag">−51%</span>
+                    </div>
+                    <button class="overview-more-btn" onclick="event.stopPropagation(); openProductDetail('KG2');">
+                        <span data-i18n="learn_more">Learn More</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overview-card" onclick="openProductDetail('KG4')">
+                <div class="overview-visual">
+                    <div class="overview-tag">Power</div>
+                    <img src="https://ae-pic-a1.aliexpress-media.com/kf/Scdf12ad0dbb84fdda817836f945164e02.jpg" alt="Kukirin G4"
+                         onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=Kukirin+G4';">
+                </div>
+                <div class="overview-body">
+                    <div class="overview-category" data-i18n="cat_scooter">Electric Scooter</div>
+                    <h3>Kukirin G4</h3>
+                    <p data-i18n="kg4_short">The most powerful model in the G series. 70 km/h, 75 km range, 11" tires.</p>
+                    <div class="overview-price">
+                        <span class="price-now" data-price="109">$109</span>
+                    </div>
+                    <button class="overview-more-btn" onclick="event.stopPropagation(); openProductDetail('KG4');">
+                        <span data-i18n="learn_more">Learn More</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="product" id="iphone-17">
+        <div class="breadcrumb" data-i18n="breadcrumb_home">Home &nbsp;/&nbsp; Smartphones &nbsp;/&nbsp; <span>iPhone 17</span></div>
+        <div class="product-grid">
+            <div class="product-visual">
+                <div class="product-tag" data-i18n="tag_new">New</div>
+                <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-cosmicorange?wid=1200&hei=1200&fmt=p-jpg" alt="iPhone 17"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=iPhone+17';">
+            </div>
+            <div class="product-info">
+                <div class="product-eyebrow" data-i18n="eyebrow_smartphone">Smartphone · 2026</div>
+                <h1 class="product-title">iPhone 17</h1>
+                <p class="product-subtitle" data-i18n="ip17_subtitle">The latest iPhone with A19 chip, 6.3" ProMotion display and improved dual camera with 48 MP main sensor.</p>
+                <div class="rating-row">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-text"><strong>4.9</strong> · <span data-i18n="reviews_312">312 reviews</span></div>
+                </div>
+                <div class="price-block">
+                    <div class="price-main" data-price="249">$249</div>
+                    <div class="price-old" data-price="369">$369</div>
+                    <div class="price-badge">−32%</div>
+                </div>
+                <div class="price-note" data-i18n="price_vat">Price includes VAT</div>
+                <p class="product-note" data-i18n="digital_note">Digital product — after payment you will receive the manual via email.</p>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <span data-i18n="benefit_setup">Complete setup and features guide</span>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <span data-i18n="benefit_secure">Verified seller · secure payment</span>
+                    </div>
+                </div>
+                <button class="btn-buy" onclick="openCheckout('IP17')">
+                    <span data-i18n="buy_now">Buy Now</span> — <span data-price-display="249">$249</span>
+                    <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <div class="secure-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span data-i18n="secure_payment">Secure payment via PayPal · Encrypted communication</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-params">
+            <div class="product-params-header">
+                <h3 data-i18n="params_title">Technical Specifications — iPhone 17</h3>
+                <p data-i18n="params_subtitle">Complete device specifications.</p>
+            </div>
+            <div class="params-grid">
+                <div class="param-card"><div class="param-value">A19</div><div class="param-label" data-i18n="chipset">Chipset</div></div>
+                <div class="param-card"><div class="param-value">6.3"</div><div class="param-label" data-i18n="display">Display</div></div>
+                <div class="param-card"><div class="param-value">256 GB</div><div class="param-label" data-i18n="storage">Storage</div></div>
+                <div class="param-card"><div class="param-value">48 MP</div><div class="param-label" data-i18n="main_camera">Main Camera</div></div>
+                <div class="param-card"><div class="param-value">5G</div><div class="param-label" data-i18n="network">Network</div></div>
+                <div class="param-card"><div class="param-value">IP68</div><div class="param-label" data-i18n="water_resistance">Water Resistance</div></div>
+                <div class="param-card"><div class="param-value">4,200 mAh</div><div class="param-label" data-i18n="battery">Battery</div></div>
+                <div class="param-card"><div class="param-value">185 g</div><div class="param-label" data-i18n="weight">Weight</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="product" id="iphone-16">
+        <div class="breadcrumb" data-i18n="breadcrumb_home">Home &nbsp;/&nbsp; Smartphones &nbsp;/&nbsp; <span>iPhone 16</span></div>
+        <div class="product-grid">
+            <div class="product-visual">
+                <div class="product-tag" data-i18n="tag_bestseller">Bestseller</div>
+                <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=1200&hei=1200&fmt=p-jpg" alt="iPhone 16"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=iPhone+16';">
+            </div>
+            <div class="product-info">
+                <div class="product-eyebrow" data-i18n="eyebrow_smartphone">Smartphone · 2026</div>
+                <h1 class="product-title">iPhone 16</h1>
+                <p class="product-subtitle" data-i18n="ip16_subtitle">Elegant iPhone with A18 chip, 6.1" Super Retina XDR display and improved dual camera with 48 MP main sensor.</p>
+                <div class="rating-row">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-text"><strong>4.8</strong> · <span data-i18n="reviews_638">638 reviews</span></div>
+                </div>
+                <div class="price-block">
+                    <div class="price-main" data-price="199">$199</div>
+                    <div class="price-old" data-price="299">$299</div>
+                    <div class="price-badge">−32%</div>
+                </div>
+                <div class="price-note" data-i18n="price_vat">Price includes VAT</div>
+                <p class="product-note" data-i18n="digital_note">Digital product — after payment you will receive the manual via email.</p>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <span data-i18n="benefit_setup">Complete setup and features guide</span>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span data-i18n="benefit_secure">Verified seller · secure payment</span>
+                    </div>
+                </div>
+                <button class="btn-buy" onclick="openCheckout('IP16')">
+                    <span data-i18n="buy_now">Buy Now</span> — <span data-price-display="199">$199</span>
+                    <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <div class="secure-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span data-i18n="secure_payment">Secure payment via PayPal · Encrypted communication</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-params">
+            <div class="product-params-header">
+                <h3 data-i18n="params_title">Technical Specifications — iPhone 16</h3>
+                <p data-i18n="params_subtitle">Complete device specifications.</p>
+            </div>
+            <div class="params-grid">
+                <div class="param-card"><div class="param-value">A18</div><div class="param-label" data-i18n="chipset">Chipset</div></div>
+                <div class="param-card"><div class="param-value">6.1"</div><div class="param-label" data-i18n="display">Display</div></div>
+                <div class="param-card"><div class="param-value">128 GB</div><div class="param-label" data-i18n="storage">Storage</div></div>
+                <div class="param-card"><div class="param-value">48 MP</div><div class="param-label" data-i18n="main_camera">Main Camera</div></div>
+                <div class="param-card"><div class="param-value">5G</div><div class="param-label" data-i18n="network">Network</div></div>
+                <div class="param-card"><div class="param-value">IP68</div><div class="param-label" data-i18n="water_resistance">Water Resistance</div></div>
+                <div class="param-card"><div class="param-value">3,561 mAh</div><div class="param-label" data-i18n="battery">Battery</div></div>
+                <div class="param-card"><div class="param-value">170 g</div><div class="param-label" data-i18n="weight">Weight</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="product" id="airpods-4">
+        <div class="breadcrumb" data-i18n="breadcrumb_home">Home &nbsp;/&nbsp; Headphones &nbsp;/&nbsp; <span>AirPods 4</span></div>
+        <div class="product-grid">
+            <div class="product-visual">
+                <div class="product-tag" data-i18n="tag_topsound">Top Sound</div>
+                <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-4-select-202409?wid=1200&hei=1200&fmt=p-jpg" alt="AirPods 4"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=AirPods+4';">
+            </div>
+            <div class="product-info">
+                <div class="product-eyebrow" data-i18n="eyebrow_headphones">Headphones · 2026</div>
+                <h1 class="product-title">AirPods 4</h1>
+                <p class="product-subtitle" data-i18n="ap4_subtitle">Wireless earbuds with active noise cancellation, spatial audio and up to 30 hours of battery life with charging case.</p>
+                <div class="rating-row">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-text"><strong>4.8</strong> · <span data-i18n="reviews_524">524 reviews</span></div>
+                </div>
+                <div class="price-block">
+                    <div class="price-main" data-price="29">$29</div>
+                    <div class="price-old" data-price="59">$59</div>
+                    <div class="price-badge">−54%</div>
+                </div>
+                <div class="price-note" data-i18n="price_vat">Price includes VAT</div>
+                <p class="product-note" data-i18n="digital_note">Digital product — after payment you will receive the manual via email.</p>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <span data-i18n="benefit_pairing">Complete pairing and features guide</span>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span data-i18n="benefit_secure">Verified seller · secure payment</span>
+                    </div>
+                </div>
+                <button class="btn-buy" onclick="openCheckout('AP4')">
+                    <span data-i18n="buy_now">Buy Now</span> — <span data-price-display="29">$29</span>
+                    <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <div class="secure-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span data-i18n="secure_payment">Secure payment via PayPal · Encrypted communication</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-params">
+            <div class="product-params-header">
+                <h3 data-i18n="params_title">Technical Specifications — AirPods 4</h3>
+                <p data-i18n="params_subtitle">Complete device specifications.</p>
+            </div>
+            <div class="params-grid">
+                <div class="param-card"><div class="param-value">ANC</div><div class="param-label" data-i18n="noise_cancellation">Noise Cancellation</div></div>
+                <div class="param-card"><div class="param-value">30 h</div><div class="param-label" data-i18n="battery_life">Battery Life</div></div>
+                <div class="param-card"><div class="param-value">H2</div><div class="param-label" data-i18n="chipset">Chipset</div></div>
+                <div class="param-card"><div class="param-value">5.3</div><div class="param-label">Bluetooth</div></div>
+                <div class="param-card"><div class="param-value">IP54</div><div class="param-label" data-i18n="water_resistance">Water Resistance</div></div>
+                <div class="param-card"><div class="param-value">USB-C</div><div class="param-label" data-i18n="charging">Charging</div></div>
+                <div class="param-card"><div class="param-value">4.5 g</div><div class="param-label" data-i18n="weight">Weight</div></div>
+                <div class="param-card"><div class="param-value">Spatial</div><div class="param-label" data-i18n="spatial_audio">Spatial Audio</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="product" id="kukirin-g2">
+        <div class="breadcrumb" data-i18n="breadcrumb_home">Home &nbsp;/&nbsp; Electric Scooters &nbsp;/&nbsp; <span>Kukirin G2</span></div>
+        <div class="product-grid">
+            <div class="product-visual">
+                <div class="product-tag">51% Off</div>
+                <img src="https://kukirin.global/cdn/shop/files/kukirin-g2-new-main-image_1.webp?crop=center&height=1200&v=1779691026&width=1200" alt="Kukirin G2"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=Kukirin+G2';">
+            </div>
+            <div class="product-info">
+                <div class="product-eyebrow" data-i18n="eyebrow_scooter">Electric Scooter · 2026</div>
+                <h1 class="product-title">Kukirin G2</h1>
+                <p class="product-subtitle" data-i18n="kg2_subtitle">Powerful electric scooter with 800 W motor, up to 55 km range and 25 km/h top speed. Designed for daily city rides and weekend adventures.</p>
+                <div class="rating-row">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-text"><strong>4.9</strong> · <span data-i18n="reviews_291">291 reviews</span></div>
+                </div>
+                <div class="price-block">
+                    <div class="price-main" data-price="55">$55</div>
+                    <div class="price-old" data-price="109">$109</div>
+                    <div class="price-badge">−51%</div>
+                </div>
+                <div class="price-note" data-i18n="price_vat">Price includes VAT</div>
+                <p class="product-note" data-i18n="digital_note">Digital product — after payment you will receive the manual via email.</p>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <span data-i18n="benefit_maintenance">Complete setup and maintenance guide</span>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span data-i18n="benefit_secure">Verified seller · secure payment</span>
+                    </div>
+                </div>
+                <button class="btn-buy" onclick="openCheckout('KG2')">
+                    <span data-i18n="buy_now">Buy Now</span> — <span data-price-display="55">$55</span>
+                    <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <div class="secure-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span data-i18n="secure_payment">Secure payment via PayPal · Encrypted communication</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-params">
+            <div class="product-params-header">
+                <h3 data-i18n="params_title">Technical Specifications — Kukirin G2</h3>
+                <p data-i18n="params_subtitle">Complete G2 model specifications.</p>
+            </div>
+            <div class="params-grid">
+                <div class="param-card"><div class="param-value">800 W</div><div class="param-label" data-i18n="motor_power">Motor Power</div></div>
+                <div class="param-card"><div class="param-value">55 km</div><div class="param-label" data-i18n="max_range">Max Range</div></div>
+                <div class="param-card"><div class="param-value">25 km/h</div><div class="param-label" data-i18n="max_speed">Max Speed</div></div>
+                <div class="param-card"><div class="param-value">48 V</div><div class="param-label" data-i18n="battery_ah">15.6 Ah Battery</div></div>
+                <div class="param-card"><div class="param-value">25 kg</div><div class="param-label" data-i18n="weight">Weight</div></div>
+                <div class="param-card"><div class="param-value">10"</div><div class="param-label" data-i18n="tires">Tires</div></div>
+                <div class="param-card"><div class="param-value">IPX4</div><div class="param-label" data-i18n="water_resistance">Water Resistance</div></div>
+                <div class="param-card"><div class="param-value">120 kg</div><div class="param-label" data-i18n="max_load">Max Load</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="product" id="kukirin-g4">
+        <div class="breadcrumb" data-i18n="breadcrumb_home">Home &nbsp;/&nbsp; Electric Scooters &nbsp;/&nbsp; <span>Kukirin G4</span></div>
+        <div class="product-grid">
+            <div class="product-visual">
+                <div class="product-tag">Power</div>
+                <img src="https://ae-pic-a1.aliexpress-media.com/kf/Scdf12ad0dbb84fdda817836f945164e02.jpg" alt="Kukirin G4"
+                     onerror="this.onerror=null; this.src='https://placehold.co/600x600/fff5ed/ff6a00?text=Kukirin+G4';">
+            </div>
+            <div class="product-info">
+                <div class="product-eyebrow" data-i18n="eyebrow_scooter">Electric Scooter · 2026</div>
+                <h1 class="product-title">Kukirin G4</h1>
+                <p class="product-subtitle" data-i18n="kg4_subtitle">The most powerful model in the G series. 70 km/h top speed, 75 km range and 11" tires for maximum stability and comfort.</p>
+                <div class="rating-row">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-text"><strong>4.9</strong> · <span data-i18n="reviews_96">96 reviews</span></div>
+                </div>
+                <div class="price-block">
+                    <div class="price-main" data-price="109">$109</div>
+                </div>
+                <div class="price-note" data-i18n="price_vat">Price includes VAT</div>
+                <p class="product-note" data-i18n="digital_note">Digital product — after payment you will receive the manual via email.</p>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                        <span data-i18n="benefit_maintenance">Complete setup and maintenance guide</span>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                        <span data-i18n="benefit_secure">Verified seller · secure payment</span>
+                    </div>
+                </div>
+                <button class="btn-buy" onclick="openCheckout('KG4')">
+                    <span data-i18n="buy_now">Buy Now</span> — <span data-price-display="109">$109</span>
+                    <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+                <div class="secure-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span data-i18n="secure_payment">Secure payment via PayPal · Encrypted communication</span>
+                </div>
+            </div>
+        </div>
+        <div class="product-params">
+            <div class="product-params-header">
+                <h3 data-i18n="params_title">Technical Specifications — Kukirin G4</h3>
+                <p data-i18n="params_subtitle">Complete G4 specifications.</p>
+            </div>
+            <div class="params-grid">
+                <div class="param-card"><div class="param-value">1200 W</div><div class="param-label" data-i18n="motor_power">Motor Power</div></div>
+                <div class="param-card"><div class="param-value">75 km</div><div class="param-label" data-i18n="max_range">Max Range</div></div>
+                <div class="param-card"><div class="param-value">70 km/h</div><div class="param-label" data-i18n="max_speed">Max Speed</div></div>
+                <div class="param-card"><div class="param-value">60 V</div><div class="param-label" data-i18n="battery_ah">20 Ah Battery</div></div>
+                <div class="param-card"><div class="param-value">37 kg</div><div class="param-label" data-i18n="weight">Weight</div></div>
+                <div class="param-card"><div class="param-value">11"</div><div class="param-label" data-i18n="tires">Tires</div></div>
+                <div class="param-card"><div class="param-value">IPX4</div><div class="param-label" data-i18n="water_resistance">Water Resistance</div></div>
+                <div class="param-card"><div class="param-value">120 kg</div><div class="param-label" data-i18n="max_load">Max Load</div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="description" id="description">
+        <div class="description-inner">
+            <h2 data-i18n="desc_title">Quality You Can Trust</h2>
+            <p data-i18n="desc_p1">At <strong>BESTxShop</strong> we offer a carefully curated selection of premium products — from the latest iPhones like iPhone 17 and iPhone 16, through excellent wireless earbuds AirPods 4, to reliable electric scooters from Kukirin.</p>
+            <p data-i18n="desc_p2">Each product goes through careful selection and comes with a complete guide to setup, maintenance and safety instructions — everything you need for proper and safe use.</p>
+            <p data-i18n="desc_p3">Whether you're looking for a new phone, headphones or a reliable scooter, you'll find it at BESTxShop.</p>
+        </div>
+    </section>
+
+    <section class="final-cta" id="buy">
+        <h2 data-i18n="cta_title">Order Today</h2>
+        <p data-i18n="cta_subtitle">Use discount code <strong>BestKukirin10</strong> and get 10% off your entire order.</p>
+        <button class="btn-buy" onclick="openCheckout('IP17')">
+            <span data-i18n="buy_now">Buy Now</span> — <span data-price-display="249">$249</span>
+            <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <div class="logo-mark">B</div>
+                BESTxShop
+            </div>
+            <ul class="footer-links">
+                <li><a href="#iphone-17">iPhone 17</a></li>
+                <li><a href="#iphone-16">iPhone 16</a></li>
+                <li><a href="#airpods-4">AirPods 4</a></li>
+                <li><a href="#kukirin-g2">Kukirin G2</a></li>
+                <li><a href="#kukirin-g4">Kukirin G4</a></li>
+            </ul>
+        </div>
+        <div class="footer-copy" data-i18n="footer_copy">© 2026 BESTxShop. All rights reserved.</div>
+    </footer>
+
+    <div class="disclaimer">
+        <p data-i18n="disclaimer_text">Notice: This is a digital product. After purchase you will receive access to digital content, not physical goods. No physical item will be shipped to you. Images are for illustration purposes only. Specifications may vary.</p>
+    </div>
+
+    <div class="detail-modal-overlay" id="productDetailModal">
+        <div class="detail-modal">
+            <button class="detail-modal-close" onclick="closeProductDetail()">✕</button>
+            <div class="detail-modal-grid">
+                <div class="detail-modal-visual">
+                    <img id="detailImage" src="" alt="">
+                </div>
+                <div class="detail-modal-info">
+                    <div class="detail-modal-category" id="detailCategory"></div>
+                    <h2 id="detailTitle"></h2>
+                    <p class="detail-subtitle" id="detailSubtitle"></p>
+                    <div class="detail-modal-rating">
+                        <span class="detail-stars">★★★★★</span>
+                        <span><strong id="detailRatingScore"></strong> · <span id="detailRatingCount"></span></span>
+                    </div>
+                    <div class="detail-modal-price">
+                        <span class="detail-price-now" id="detailPriceNow"></span>
+                        <span class="detail-price-was" id="detailPriceWas"></span>
+                        <span class="detail-price-tag" id="detailPriceTag"></span>
+                    </div>
+                    <div class="detail-modal-pricenote" data-i18n="detail_pricenote">Price includes VAT · Digital product</div>
+                    <div class="detail-modal-benefits" id="detailBenefits"></div>
+                    <button class="btn-buy" id="detailBuyBtn">
+                        <span data-i18n="buy_now">Buy Now</span>
+                        <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="detail-modal-params">
+                <h3 data-i18n="params_title_short">Technical Specifications</h3>
+                <div class="params-grid" id="detailParamsGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal">
+            <div id="formView">
+                <div class="modal-header">
+                    <h3 data-i18n="checkout_title">Complete Order</h3>
+                    <button class="modal-close" onclick="closeCheckout()">✕</button>
+                </div>
+
+                <div class="order-summary">
+                    <div class="label">
+                        <span data-i18n="order_product">Product</span>
+                        <strong id="summaryProductName">iPhone 17</strong>
+                    </div>
+                    <div class="price" id="summaryPrice">$249</div>
+                </div>
+
+                <form id="checkoutForm" novalidate>
+                    <div class="form-section-title" data-i18n="form_contact">Contact Information</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName" data-i18n="form_firstname">First Name *</label>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName" data-i18n="form_lastname">Last Name *</label>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label for="email" data-i18n="form_email">Email *</label>
+                            <input type="email" id="email" placeholder="john.doe@email.com" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label for="phone" data-i18n="form_phone">Phone *</label>
+                            <input type="tel" id="phone" placeholder="+1 234 567 890" required>
+                        </div>
+                    </div>
+
+                    <div class="form-section-title" data-i18n="form_billing">Billing Address</div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label for="street" data-i18n="form_street">Street and Number *</label>
+                            <input type="text" id="street" placeholder="123 Main Street" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city" data-i18n="form_city">City *</label>
+                            <input type="text" id="city" placeholder="New York" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zip" data-i18n="form_zip">ZIP Code *</label>
+                            <input type="text" id="zip" placeholder="10001" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label for="country" data-i18n="form_country">Country *</label>
+                            <select id="country" required>
+                                <option value="US" selected>United States</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="CZ">Czech Republic</option>
+                                <option value="ES">Spain</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section-title" data-i18n="form_discount">Discount Code</div>
+                    <div class="discount-box" id="discountBox">
+                        <div class="discount-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M12 2v14"/><path d="m7 9 5 5 5-5"/></svg>
+                            <span data-i18n="discount_have">I have a discount code</span>
+                        </div>
+                        <div class="discount-input-row">
+                            <input type="text" id="discountCode" placeholder="ENTER CODE" autocomplete="off">
+                            <button type="button" id="discountBtn" onclick="applyDiscount()" data-i18n="discount_apply">Apply</button>
+                        </div>
+                        <div class="discount-msg" id="discountMsg"></div>
+                    </div>
+
+                    <div class="form-section-title" data-i18n="form_payment">Payment</div>
+                    <div id="paypal-button-container">
+                        <div class="paypal-loading" data-i18n="paypal_loading">Loading PayPal payment gateway…</div>
+                    </div>
+                    <div class="paypal-error" id="paypalError" style="display:none; margin-bottom:14px;"></div>
+
+                    <p class="modal-disclaimer" data-i18n="checkout_disclaimer">
+                        By submitting your order you agree to the terms and conditions. Please note that this is a digital product —
+                        after payment you will receive the user manual in PDF format via email.
+                        This is not a physical product, no physical item will be shipped to you.
+                        Payment is processed by PayPal.
+                    </p>
+                </form>
+            </div>
+
+            <div class="success-view" id="successView">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3 data-i18n="success_title">Payment Successful!</h3>
+                <p data-i18n="success_p1">Thank you for your purchase. Your payment has been processed via PayPal.</p>
+                <p><span data-i18n="success_txn">Transaction ID:</span> <span class="email-highlight" id="txnId">—</span></p>
+                <div class="download-note" data-i18n="success_note">The manual has been sent to your email.</div>
+                <div class="digital-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/><path d="M12 16v4"/></svg>
+                    <span data-i18n="success_badge">Digital Delivery · PDF</span>
+                </div>
+                <button class="btn-confirm" style="margin-top:28px; background:#0a0a14;" onclick="closeCheckout(); resetForm();" data-i18n="success_close">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🆕 TEST / AKTIVAČNÍ TLAČÍTKO (zobrazí se jen na file:// nebo localhost) -->
+    <button class="test-activate-btn" id="testActivateBtn" onclick="runActivationTest()">
+        🔧 Aktivovat notifikace
+    </button>
+    <div class="test-activate-toast" id="testActivateToast"></div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=BAA0D3Nm6YklbkLDTupq9HG4cTgdUgqHuMB-QBG36oNBrpgilYM0hH_cBNXAwU_lPGsynz9QcFdrUmYxp4&currency=USD&locale=en_US&intent=capture&components=buttons&commit=true"></script>
+
+    <script>
+        const TRANSLATIONS = {
+            en: {
+                nav_buy: 'Buy Now',
+                shop_title: 'Premium Electronic Products',
+                shop_subtitle: 'Carefully curated selection of the best devices from Apple and Kukirin electric scooters.',
+                tag_new: 'New', tag_bestseller: 'Bestseller', tag_topsound: 'Top Sound',
+                cat_smartphone: 'Smartphone', cat_headphones: 'Headphones', cat_scooter: 'Electric Scooter',
+                learn_more: 'Learn More',
+                ip17_short: 'The latest iPhone with A19 chip and 6.3" ProMotion display.',
+                ip16_short: 'Elegant iPhone with A18 chip and 6.1" Super Retina XDR display.',
+                ap4_short: 'Wireless earbuds with ANC, spatial audio and up to 30h battery life.',
+                kg2_short: 'Powerful scooter with 800W motor, 55 km range and 25 km/h top speed.',
+                kg4_short: 'The most powerful model in the G series. 70 km/h, 75 km range, 11" tires.',
+                breadcrumb_home: 'Home',
+                eyebrow_smartphone: 'Smartphone · 2026', eyebrow_headphones: 'Headphones · 2026', eyebrow_scooter: 'Electric Scooter · 2026',
+                ip17_subtitle: 'The latest iPhone with A19 chip, 6.3" ProMotion display and improved dual camera with 48 MP main sensor.',
+                ip16_subtitle: 'Elegant iPhone with A18 chip, 6.1" Super Retina XDR display and improved dual camera with 48 MP main sensor.',
+                ap4_subtitle: 'Wireless earbuds with active noise cancellation, spatial audio and up to 30 hours of battery life with charging case.',
+                kg2_subtitle: 'Powerful electric scooter with 800 W motor, up to 55 km range and 25 km/h top speed. Designed for daily city rides and weekend adventures.',
+                kg4_subtitle: 'The most powerful model in the G series. 70 km/h top speed, 75 km range and 11" tires for maximum stability and comfort.',
+                reviews_312: '312 reviews', reviews_638: '638 reviews', reviews_524: '524 reviews', reviews_291: '291 reviews', reviews_96: '96 reviews',
+                price_vat: 'Price includes VAT',
+                digital_note: 'Digital product — after payment you will receive the manual via email.',
+                benefit_setup: 'Complete setup and features guide',
+                benefit_pairing: 'Complete pairing and features guide',
+                benefit_maintenance: 'Complete setup and maintenance guide',
+                benefit_secure: 'Verified seller · secure payment',
+                buy_now: 'Buy Now',
+                secure_payment: 'Secure payment via PayPal · Encrypted communication',
+                params_title: 'Technical Specifications', params_subtitle: 'Complete device specifications.', params_title_short: 'Technical Specifications',
+                chipset: 'Chipset', display: 'Display', storage: 'Storage', main_camera: 'Main Camera', network: 'Network',
+                water_resistance: 'Water Resistance', battery: 'Battery', weight: 'Weight',
+                noise_cancellation: 'Noise Cancellation', battery_life: 'Battery Life', charging: 'Charging', spatial_audio: 'Spatial Audio',
+                motor_power: 'Motor Power', max_range: 'Max Range', max_speed: 'Max Speed', battery_ah: 'Battery', tires: 'Tires', max_load: 'Max Load',
+                dual_motor: 'Dual Motor', offroad_tires: 'Off-road Tires', vacuum_tires: 'Vacuum Tires',
+                desc_title: 'Quality You Can Trust',
+                desc_p1: 'At <strong>BESTxShop</strong> we offer a carefully curated selection of premium products — from the latest iPhones like iPhone 17 and iPhone 16, through excellent wireless earbuds AirPods 4, to reliable electric scooters from Kukirin.',
+                desc_p2: 'Each product goes through careful selection and comes with a complete guide to setup, maintenance and safety instructions — everything you need for proper and safe use.',
+                desc_p3: 'Whether you\'re looking for a new phone, headphones or a reliable scooter, you\'ll find it at BESTxShop.',
+                cta_title: 'Order Today',
+                cta_subtitle: 'Use discount code <strong>BestKukirin10</strong> and get 10% off your entire order.',
+                footer_copy: '© 2026 BESTxShop. All rights reserved.',
+                disclaimer_text: 'Notice: This is a digital product. After purchase you will receive access to digital content, not physical goods. No physical item will be shipped to you. Images are for illustration purposes only. Specifications may vary.',
+                detail_pricenote: 'Price includes VAT · Digital product',
+                checkout_title: 'Complete Order', order_product: 'Product',
+                form_contact: 'Contact Information', form_firstname: 'First Name *', form_lastname: 'Last Name *', form_email: 'Email *', form_phone: 'Phone *',
+                form_billing: 'Billing Address', form_street: 'Street and Number *', form_city: 'City *', form_zip: 'ZIP Code *', form_country: 'Country *',
+                form_discount: 'Discount Code', discount_have: 'I have a discount code', discount_apply: 'Apply',
+                form_payment: 'Payment', paypal_loading: 'Loading PayPal payment gateway…',
+                checkout_disclaimer: 'By submitting your order you agree to the terms and conditions. Please note that this is a digital product — after payment you will receive the user manual in PDF format via email. This is not a physical product, no physical item will be shipped to you. Payment is processed by PayPal.',
+                success_title: 'Payment Successful!',
+                success_p1: 'Thank you for your purchase. Your payment has been processed via PayPal.',
+                success_txn: 'Transaction ID:', success_note: 'The manual has been sent to your email.',
+                success_badge: 'Digital Delivery · PDF', success_close: 'Close'
+            },
+            cs: {
+                nav_buy: 'Koupit',
+                shop_title: 'Prémiové elektronické produkty',
+                shop_subtitle: 'Pečlivě vybraný výběr těch nejlepších zařízení od Applu a elektrických koloběžek Kukirin.',
+                tag_new: 'Novinka', tag_bestseller: 'Bestseller', tag_topsound: 'Top zvuk',
+                cat_smartphone: 'Smartphone', cat_headphones: 'Sluchátka', cat_scooter: 'Elektrická koloběžka',
+                learn_more: 'Zjistit více',
+                ip17_short: 'Nejnovější iPhone s čipem A19 a 6,3" ProMotion displejem.',
+                ip16_short: 'Elegantní iPhone s čipem A18 a 6,1" Super Retina XDR displejem.',
+                ap4_short: 'Bezdrátová sluchátka s ANC, prostorovým zvukem a až 30 h výdrží.',
+                kg2_short: 'Výkonná koloběžka s motorem 800 W, dojezdem 55 km a rychlostí 25 km/h.',
+                kg4_short: 'Nejsilnější model řady G. Rychlost 70 km/h, dojezd 75 km, 11" pneumatiky.',
+                breadcrumb_home: 'Domů',
+                eyebrow_smartphone: 'Smartphone · 2026', eyebrow_headphones: 'Sluchátka · 2026', eyebrow_scooter: 'Elektrická koloběžka · 2026',
+                ip17_subtitle: 'Nejnovější iPhone s čipem A19, 6,3" ProMotion displejem a vylepšeným duálním fotoaparátem s 48 Mpx hlavním snímačem.',
+                ip16_subtitle: 'Elegantní iPhone s čipem A18, 6,1" Super Retina XDR displejem a vylepšeným duálním fotoaparátem s 48 Mpx hlavním snímačem.',
+                ap4_subtitle: 'Bezdrátová sluchátka s aktivním potlačením hluku, prostorovým zvukem a až 30 hodinami výdrže s nabíjecím pouzdrem.',
+                kg2_subtitle: 'Výkonná elektrická koloběžka s motorem 800 W, dojezdem až 55 km a maximální rychlostí 25 km/h. Navržena pro každodenní jízdu ve městě i víkendová dobrodružství.',
+                kg4_subtitle: 'Nejsilnější model řady G. Maximální rychlost 70 km/h, dojezd 75 km a 11" pneumatiky pro maximální stabilitu a komfort.',
+                reviews_312: '312 recenzí', reviews_638: '638 recenzí', reviews_524: '524 recenzí', reviews_291: '291 recenzí', reviews_96: '96 recenzí',
+                price_vat: 'Cena včetně DPH',
+                digital_note: 'Digitální produkt — po zaplacení Vám bude manuál doručen e-mailem.',
+                benefit_setup: 'Kompletní průvodce nastavením a funkcemi',
+                benefit_pairing: 'Kompletní průvodce párováním a funkcemi',
+                benefit_maintenance: 'Kompletní průvodce nastavením a údržbou',
+                benefit_secure: 'Ověřený prodejce · bezpečná platba',
+                buy_now: 'Koupit nyní',
+                secure_payment: 'Zabezpečená platba přes PayPal · Šifrovaná komunikace',
+                params_title: 'Technické parametry', params_subtitle: 'Kompletní specifikace zařízení.', params_title_short: 'Technické parametry',
+                chipset: 'Čipset', display: 'Displej', storage: 'Úložiště', main_camera: 'Hlavní foťák', network: 'Síť',
+                water_resistance: 'Odolnost', battery: 'Baterie', weight: 'Hmotnost',
+                noise_cancellation: 'Potlačení hluku', battery_life: 'Výdrž', charging: 'Nabíjení', spatial_audio: 'Prostorový zvuk',
+                motor_power: 'Výkon motoru', max_range: 'Max. dojezd', max_speed: 'Max. rychlost', battery_ah: 'Baterie', tires: 'Pneumatiky', max_load: 'Max. nosnost',
+                dual_motor: 'Duální motor', offroad_tires: 'Off-road pneumatiky', vacuum_tires: 'Bezdušové pneumatiky',
+                desc_title: 'Kvalita, které můžete věřit',
+                desc_p1: 'V <strong>BESTxShop</strong> nabízíme pečlivě vybraný výběr prémiových produktů — od těch nejnovějších smartphonů iPhone 17 a iPhone 16, přes skvělá bezdrátová sluchátka AirPods 4, až po spolehlivé elektrické koloběžky značky Kukirin.',
+                desc_p2: 'Každý produkt prochází pečlivým výběrem a nabízíme k němu kompletní průvodce nastavením, údržbou a bezpečnostními pokyny — vše, co potřebujete pro správné a bezpečné používání.',
+                desc_p3: 'Ať už hledáte nový telefon, sluchátka nebo spolehlivou koloběžku, v BESTxShop si vyberete.',
+                cta_title: 'Objednejte ještě dnes',
+                cta_subtitle: 'Použijte slevový kód <strong>BestKukirin10</strong> a získejte 10 % slevu na celou objednávku.',
+                footer_copy: '© 2026 BESTxShop. Všechna práva vyhrazena.',
+                disclaimer_text: 'Upozornění: Jedná se o digitální produkt. Po zakoupení obdržíte přístup k digitálnímu obsahu, nikoli fyzické zboží. Nebude vám doručen žádný hmotný předmět. Obrázky jsou pouze ilustrativní. Specifikace se mohou lišit.',
+                detail_pricenote: 'Cena včetně DPH · Digitální produkt',
+                checkout_title: 'Dokončit objednávku', order_product: 'Produkt',
+                form_contact: 'Kontaktní údaje', form_firstname: 'Jméno *', form_lastname: 'Příjmení *', form_email: 'E-mail *', form_phone: 'Telefon *',
+                form_billing: 'Fakturační adresa', form_street: 'Ulice a číslo popisné *', form_city: 'Město *', form_zip: 'PSČ *', form_country: 'Země *',
+                form_discount: 'Slevový kód', discount_have: 'Mám slevový kód', discount_apply: 'Použít',
+                form_payment: 'Platba', paypal_loading: 'Načítám platební bránu PayPal…',
+                checkout_disclaimer: 'Odesláním objednávky souhlasíte s obchodními podmínkami. Upozorňujeme, že se jedná o digitální produkt — po zaplacení Vám bude uživatelský manuál ve formátu PDF doručen e-mailem. Nejde o fyzické zboží, nebude vám doručen žádný hmotný předmět. Platbu zpracovává společnost PayPal.',
+                success_title: 'Platba proběhla úspěšně!',
+                success_p1: 'Děkujeme za nákup. Vaše platba byla zpracována přes PayPal.',
+                success_txn: 'Číslo transakce:', success_note: 'Manuál Vám byl odeslán na Váš e-mail.',
+                success_badge: 'Digitální doručení · PDF', success_close: 'Zavřít'
+            },
+            es: {
+                nav_buy: 'Comprar',
+                shop_title: 'Productos Electrónicos Premium',
+                shop_subtitle: 'Selección cuidadosamente curada de los mejores dispositivos de Apple y patinetes eléctricos Kukirin.',
+                tag_new: 'Nuevo', tag_bestseller: 'Más vendido', tag_topsound: 'Mejor sonido',
+                cat_smartphone: 'Smartphone', cat_headphones: 'Auriculares', cat_scooter: 'Patinete eléctrico',
+                learn_more: 'Saber más',
+                ip17_short: 'El último iPhone con chip A19 y pantalla ProMotion de 6,3".',
+                ip16_short: 'Elegante iPhone con chip A18 y pantalla Super Retina XDR de 6,1".',
+                ap4_short: 'Auriculares inalámbricos con ANC, audio espacial y hasta 30h de batería.',
+                kg2_short: 'Patinete potente con motor de 800W, 55 km de autonomía y 25 km/h.',
+                kg4_short: 'El modelo más potente de la serie G. 70 km/h, 75 km, neumáticos de 11".',
+                breadcrumb_home: 'Inicio',
+                eyebrow_smartphone: 'Smartphone · 2026', eyebrow_headphones: 'Auriculares · 2026', eyebrow_scooter: 'Patinete eléctrico · 2026',
+                ip17_subtitle: 'El último iPhone con chip A19, pantalla ProMotion de 6,3" y cámara dual mejorada con sensor principal de 48 MP.',
+                ip16_subtitle: 'Elegante iPhone con chip A18, pantalla Super Retina XDR de 6,1" y cámara dual mejorada con sensor principal de 48 MP.',
+                ap4_subtitle: 'Auriculares inalámbricos con cancelación activa de ruido, audio espacial y hasta 30 horas de batería con estuche de carga.',
+                kg2_subtitle: 'Patinete eléctrico potente con motor de 800 W, hasta 55 km de autonomía y 25 km/h de velocidad máxima. Diseñado para desplazamientos diarios y aventuras de fin de semana.',
+                kg4_subtitle: 'El modelo más potente de la serie G. Velocidad máxima de 70 km/h, 75 km de autonomía y neumáticos de 11" para máxima estabilidad y confort.',
+                reviews_312: '312 reseñas', reviews_638: '638 reseñas', reviews_524: '524 reseñas', reviews_291: '291 reseñas', reviews_96: '96 reseñas',
+                price_vat: 'Precio con IVA incluido',
+                digital_note: 'Producto digital — tras el pago recibirá el manual por correo electrónico.',
+                benefit_setup: 'Guía completa de configuración y funciones',
+                benefit_pairing: 'Guía completa de emparejamiento y funciones',
+                benefit_maintenance: 'Guía completa de configuración y mantenimiento',
+                benefit_secure: 'Vendedor verificado · pago seguro',
+                buy_now: 'Comprar ahora',
+                secure_payment: 'Pago seguro vía PayPal · Comunicación cifrada',
+                params_title: 'Especificaciones técnicas', params_subtitle: 'Especificaciones completas del dispositivo.', params_title_short: 'Especificaciones técnicas',
+                chipset: 'Chipset', display: 'Pantalla', storage: 'Almacenamiento', main_camera: 'Cámara principal', network: 'Red',
+                water_resistance: 'Resistencia al agua', battery: 'Batería', weight: 'Peso',
+                noise_cancellation: 'Cancelación de ruido', battery_life: 'Duración de batería', charging: 'Carga', spatial_audio: 'Audio espacial',
+                motor_power: 'Potencia del motor', max_range: 'Autonomía máxima', max_speed: 'Velocidad máxima', battery_ah: 'Batería', tires: 'Neumáticos', max_load: 'Carga máxima',
+                dual_motor: 'Motor dual', offroad_tires: 'Neumáticos off-road', vacuum_tires: 'Neumáticos sin cámara',
+                desc_title: 'Calidad en la que puedes confiar',
+                desc_p1: 'En <strong>BESTxShop</strong> ofrecemos una selección cuidadosamente curada de productos premium — desde los últimos iPhones como iPhone 17 y iPhone 16, pasando por los excelentes auriculares inalámbricos AirPods 4, hasta los fiables patinetes eléctricos de Kukirin.',
+                desc_p2: 'Cada producto pasa por una cuidadosa selección e incluye una guía completa de configuración, mantenimiento e instrucciones de seguridad — todo lo que necesita para un uso correcto y seguro.',
+                desc_p3: 'Ya sea que busque un teléfono nuevo, auriculares o un patinete fiable, lo encontrará en BESTxShop.',
+                cta_title: 'Pida hoy',
+                cta_subtitle: 'Use el código de descuento <strong>BestKukirin10</strong> y obtenga un 10% de descuento en todo su pedido.',
+                footer_copy: '© 2026 BESTxShop. Todos los derechos reservados.',
+                disclaimer_text: 'Aviso: Este es un producto digital. Tras la compra recibirá acceso a contenido digital, no a bienes físicos. No se le enviará ningún artículo físico. Las imágenes son solo ilustrativas. Las especificaciones pueden variar.',
+                detail_pricenote: 'Precio con IVA incluido · Producto digital',
+                checkout_title: 'Completar pedido', order_product: 'Producto',
+                form_contact: 'Información de contacto', form_firstname: 'Nombre *', form_lastname: 'Apellidos *', form_email: 'Correo electrónico *', form_phone: 'Teléfono *',
+                form_billing: 'Dirección de facturación', form_street: 'Calle y número *', form_city: 'Ciudad *', form_zip: 'Código postal *', form_country: 'País *',
+                form_discount: 'Código de descuento', discount_have: 'Tengo un código de descuento', discount_apply: 'Aplicar',
+                form_payment: 'Pago', paypal_loading: 'Cargando pasarela de pago PayPal…',
+                checkout_disclaimer: 'Al enviar su pedido acepta los términos y condiciones. Tenga en cuenta que este es un producto digital — tras el pago recibirá el manual de usuario en formato PDF por correo electrónico. No es un producto físico, no se le enviará ningún artículo. El pago es procesado por PayPal.',
+                success_title: '¡Pago exitoso!',
+                success_p1: 'Gracias por su compra. Su pago ha sido procesado vía PayPal.',
+                success_txn: 'ID de transacción:', success_note: 'El manual ha sido enviado a su correo electrónico.',
+                success_badge: 'Entrega digital · PDF', success_close: 'Cerrar'
+            },
+            de: {
+                nav_buy: 'Jetzt kaufen',
+                shop_title: 'Premium Elektronikprodukte',
+                shop_subtitle: 'Sorgfältig ausgewählte Auswahl der besten Geräte von Apple und Kukirin E-Scootern.',
+                tag_new: 'Neu', tag_bestseller: 'Bestseller', tag_topsound: 'Top Sound',
+                cat_smartphone: 'Smartphone', cat_headphones: 'Kopfhörer', cat_scooter: 'E-Scooter',
+                learn_more: 'Mehr erfahren',
+                ip17_short: 'Das neueste iPhone mit A19 Chip und 6,3" ProMotion Display.',
+                ip16_short: 'Elegantes iPhone mit A18 Chip und 6,1" Super Retina XDR Display.',
+                ap4_short: 'Kabellose Ohrhörer mit ANC, Raumklang und bis zu 30h Akkulaufzeit.',
+                kg2_short: 'Leistungsstarker Scooter mit 800W Motor, 55 km Reichweite und 25 km/h.',
+                kg4_short: 'Das leistungsstärkste Modell der G-Serie. 70 km/h, 75 km, 11" Reifen.',
+                breadcrumb_home: 'Startseite',
+                eyebrow_smartphone: 'Smartphone · 2026', eyebrow_headphones: 'Kopfhörer · 2026', eyebrow_scooter: 'E-Scooter · 2026',
+                ip17_subtitle: 'Das neueste iPhone mit A19 Chip, 6,3" ProMotion Display und verbesserter Dual-Kamera mit 48 MP Hauptsensor.',
+                ip16_subtitle: 'Elegantes iPhone mit A18 Chip, 6,1" Super Retina XDR Display und verbesserter Dual-Kamera mit 48 MP Hauptsensor.',
+                ap4_subtitle: 'Kabellose Ohrhörer mit aktiver Geräuschunterdrückung, Raumklang und bis zu 30 Stunden Akkulaufzeit mit Ladeetui.',
+                kg2_subtitle: 'Leistungsstarker E-Scooter mit 800 W Motor, bis zu 55 km Reichweite und 25 km/h Höchstgeschwindigkeit. Entwickelt für tägliche Stadtfahrten und Wochenendabenteuer.',
+                kg4_subtitle: 'Das leistungsstärkste Modell der G-Serie. 70 km/h Höchstgeschwindigkeit, 75 km Reichweite und 11" Reifen für maximale Stabilität und Komfort.',
+                reviews_312: '312 Bewertungen', reviews_638: '638 Bewertungen', reviews_524: '524 Bewertungen', reviews_291: '291 Bewertungen', reviews_96: '96 Bewertungen',
+                price_vat: 'Preis inkl. MwSt.',
+                digital_note: 'Digitales Produkt — nach Zahlung erhalten Sie das Handbuch per E-Mail.',
+                benefit_setup: 'Komplette Einrichtungs- und Funktionsanleitung',
+                benefit_pairing: 'Komplette Kopplungs- und Funktionsanleitung',
+                benefit_maintenance: 'Komplette Einrichtungs- und Wartungsanleitung',
+                benefit_secure: 'Verifizierter Verkäufer · sichere Zahlung',
+                buy_now: 'Jetzt kaufen',
+                secure_payment: 'Sichere Zahlung über PayPal · Verschlüsselte Kommunikation',
+                params_title: 'Technische Spezifikationen', params_subtitle: 'Vollständige Gerätespezifikationen.', params_title_short: 'Technische Spezifikationen',
+                chipset: 'Chipset', display: 'Display', storage: 'Speicher', main_camera: 'Hauptkamera', network: 'Netzwerk',
+                water_resistance: 'Wasserbeständigkeit', battery: 'Akku', weight: 'Gewicht',
+                noise_cancellation: 'Geräuschunterdrückung', battery_life: 'Akkulaufzeit', charging: 'Laden', spatial_audio: 'Raumklang',
+                motor_power: 'Motorleistung', max_range: 'Max. Reichweite', max_speed: 'Max. Geschwindigkeit', battery_ah: 'Akku', tires: 'Reifen', max_load: 'Max. Belastung',
+                dual_motor: 'Dualmotor', offroad_tires: 'Offroad-Reifen', vacuum_tires: 'Schlauchlose Reifen',
+                desc_title: 'Qualität, der Sie vertrauen können',
+                desc_p1: 'Bei <strong>BESTxShop</strong> bieten wir eine sorgfältig ausgewählte Auswahl an Premium-Produkten — von den neuesten iPhones wie iPhone 17 und iPhone 16, über die hervorragenden kabellosen Ohrhörer AirPods 4, bis hin zu zuverlässigen E-Scootern von Kukirin.',
+                desc_p2: 'Jedes Produkt wird sorgfältig ausgewählt und enthält eine komplette Anleitung zu Einrichtung, Wartung und Sicherheitshinweisen — alles, was Sie für die richtige und sichere Nutzung benötigen.',
+                desc_p3: 'Ob Sie ein neues Telefon, Kopfhörer oder einen zuverlässigen Scooter suchen — bei BESTxShop werden Sie fündig.',
+                cta_title: 'Bestellen Sie noch heute',
+                cta_subtitle: 'Verwenden Sie den Rabattcode <strong>BestKukirin10</strong> und erhalten Sie 10% Rabatt auf Ihre gesamte Bestellung.',
+                footer_copy: '© 2026 BESTxShop. Alle Rechte vorbehalten.',
+                disclaimer_text: 'Hinweis: Dies ist ein digitales Produkt. Nach dem Kauf erhalten Sie Zugang zu digitalen Inhalten, nicht zu physischen Waren. Es wird kein physischer Artikel an Sie versandt. Bilder sind nur zur Veranschaulichung. Spezifikationen können abweichen.',
+                detail_pricenote: 'Preis inkl. MwSt. · Digitales Produkt',
+                checkout_title: 'Bestellung abschließen', order_product: 'Produkt',
+                form_contact: 'Kontaktinformationen', form_firstname: 'Vorname *', form_lastname: 'Nachname *', form_email: 'E-Mail *', form_phone: 'Telefon *',
+                form_billing: 'Rechnungsadresse', form_street: 'Straße und Hausnummer *', form_city: 'Stadt *', form_zip: 'Postleitzahl *', form_country: 'Land *',
+                form_discount: 'Rabattcode', discount_have: 'Ich habe einen Rabattcode', discount_apply: 'Anwenden',
+                form_payment: 'Zahlung', paypal_loading: 'PayPal Zahlungsgateway wird geladen…',
+                checkout_disclaimer: 'Mit dem Absenden Ihrer Bestellung stimmen Sie den Allgemeinen Geschäftsbedingungen zu. Bitte beachten Sie, dass es sich um ein digitales Produkt handelt — nach der Zahlung erhalten Sie das Benutzerhandbuch im PDF-Format per E-Mail. Dies ist kein physisches Produkt, es wird kein physischer Artikel an Sie versandt. Die Zahlung wird von PayPal abgewickelt.',
+                success_title: 'Zahlung erfolgreich!',
+                success_p1: 'Vielen Dank für Ihren Einkauf. Ihre Zahlung wurde über PayPal abgewickelt.',
+                success_txn: 'Transaktions-ID:', success_note: 'Das Handbuch wurde an Ihre E-Mail gesendet.',
+                success_badge: 'Digitale Lieferung · PDF', success_close: 'Schließen'
+            }
+        };
+
+        const LANG_INFO = {
+            en: { flag: '🇬🇧', label: 'English' },
+            cs: { flag: '🇨🇿', label: 'Čeština' },
+            es: { flag: '🇪🇸', label: 'Español' },
+            de: { flag: '🇩🇪', label: 'Deutsch' }
+        };
+
+        const PRODUCTS = {
+            'IP17': { id:'IP17', name:'iPhone 17', fullName:'iPhone 17', price:249 },
+            'IP16': { id:'IP16', name:'iPhone 16', fullName:'iPhone 16', price:199 },
+            'AP4':  { id:'AP4',  name:'AirPods 4', fullName:'AirPods 4', price:29  },
+            'KG2':  { id:'KG2',  name:'Kukirin G2', fullName:'Kukirin G2', price:55 },
+            'KG4':  { id:'KG4',  name:'Kukirin G4', fullName:'Kukirin G4', price:109 }
+        };
+
+        const PRODUCT_DETAILS = {
+            'IP17': {
+                categoryKey: 'eyebrow_smartphone', title: 'iPhone 17', subtitleKey: 'ip17_subtitle',
+                ratingScore: '4.9', ratingCountKey: 'reviews_312',
+                price: 249, priceOld: 369, discount: '−32%',
+                image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-17-pro-finish-select-202509-6-9inch-cosmicorange?wid=1200&hei=1200&fmt=p-jpg',
+                benefits: [{ key: 'benefit_setup' }, { key: 'benefit_secure' }],
+                params: [
+                    { v:'A19', l:'chipset' }, { v:'6.3"', l:'display' },
+                    { v:'256 GB', l:'storage' }, { v:'48 MP', l:'main_camera' },
+                    { v:'5G', l:'network' }, { v:'IP68', l:'water_resistance' },
+                    { v:'4,200 mAh', l:'battery' }, { v:'185 g', l:'weight' }
+                ]
+            },
+            'IP16': {
+                categoryKey: 'eyebrow_smartphone', title: 'iPhone 16', subtitleKey: 'ip16_subtitle',
+                ratingScore: '4.8', ratingCountKey: 'reviews_638',
+                price: 199, priceOld: 299, discount: '−32%',
+                image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=1200&hei=1200&fmt=p-jpg',
+                benefits: [{ key: 'benefit_setup' }, { key: 'benefit_secure' }],
+                params: [
+                    { v:'A18', l:'chipset' }, { v:'6.1"', l:'display' },
+                    { v:'128 GB', l:'storage' }, { v:'48 MP', l:'main_camera' },
+                    { v:'5G', l:'network' }, { v:'IP68', l:'water_resistance' },
+                    { v:'3,561 mAh', l:'battery' }, { v:'170 g', l:'weight' }
+                ]
+            },
+            'AP4': {
+                categoryKey: 'eyebrow_headphones', title: 'AirPods 4', subtitleKey: 'ap4_subtitle',
+                ratingScore: '4.8', ratingCountKey: 'reviews_524',
+                price: 29, priceOld: 59, discount: '−54%',
+                image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-4-select-202409?wid=1200&hei=1200&fmt=p-jpg',
+                benefits: [{ key: 'benefit_pairing' }, { key: 'benefit_secure' }],
+                params: [
+                    { v:'ANC', l:'noise_cancellation' }, { v:'30 h', l:'battery_life' },
+                    { v:'H2', l:'chipset' }, { v:'5.3', l:'bluetooth' },
+                    { v:'IP54', l:'water_resistance' }, { v:'USB-C', l:'charging' },
+                    { v:'4.5 g', l:'weight' }, { v:'Spatial', l:'spatial_audio' }
+                ]
+            },
+            'KG2': {
+                categoryKey: 'eyebrow_scooter', title: 'Kukirin G2', subtitleKey: 'kg2_subtitle',
+                ratingScore: '4.9', ratingCountKey: 'reviews_291',
+                price: 55, priceOld: 109, discount: '−51%',
+                image: 'https://kukirin.global/cdn/shop/files/kukirin-g2-new-main-image_1.webp?crop=center&height=1200&v=1779691026&width=1200',
+                benefits: [{ key: 'benefit_maintenance' }, { key: 'benefit_secure' }],
+                params: [
+                    { v:'800 W', l:'motor_power' }, { v:'55 km', l:'max_range' },
+                    { v:'25 km/h', l:'max_speed' }, { v:'48 V', l:'battery_ah' },
+                    { v:'25 kg', l:'weight' }, { v:'10"', l:'tires' },
+                    { v:'IPX4', l:'water_resistance' }, { v:'120 kg', l:'max_load' }
+                ]
+            },
+            'KG4': {
+                categoryKey: 'eyebrow_scooter', title: 'Kukirin G4', subtitleKey: 'kg4_subtitle',
+                ratingScore: '4.9', ratingCountKey: 'reviews_96',
+                price: 109, priceOld: null, discount: null,
+                image: 'https://ae-pic-a1.aliexpress-media.com/kf/Scdf12ad0dbb84fdda817836f945164e02.jpg',
+                benefits: [{ key: 'benefit_maintenance' }, { key: 'benefit_secure' }],
+                params: [
+                    { v:'1200 W', l:'motor_power' }, { v:'75 km', l:'max_range' },
+                    { v:'70 km/h', l:'max_speed' }, { v:'60 V', l:'battery_ah' },
+                    { v:'37 kg', l:'weight' }, { v:'11"', l:'tires' },
+                    { v:'IPX4', l:'water_resistance' }, { v:'120 kg', l:'max_load' }
+                ]
+            }
+        };
+
+        const DISCOUNT_CODE = 'BestKukirin10';
+        const DISCOUNT_PERCENT = 10;
+        const NOTIFICATION_EMAIL = 'senzuraif@gmail.com';
+
+        let currentLang = 'en';
+        let currentProduct = PRODUCTS['IP17'];
+        let discountApplied = false;
+        let paypalRendered = false;
+        let paypalRetries = 0;
+        let detailProductId = null;
+
+        const CURRENCY_RATES = { en: 1, cs: 23, es: 0.92, de: 0.92 };
+
+        function formatPrice(usdValue, lang) {
+            lang = lang || currentLang;
+            const rate = CURRENCY_RATES[lang] || 1;
+            const converted = Math.round(usdValue * rate);
+            switch(lang) {
+                case 'cs': return converted.toLocaleString('cs-CZ').replace(/\u00a0/g, ' ') + ' Kč';
+                case 'es': return converted.toLocaleString('es-ES') + ' €';
+                case 'de': return converted.toLocaleString('de-DE') + ' €';
+                default: return '$' + converted.toLocaleString('en-US');
+            }
+        }
+
+        function toggleLangMenu(e) {
+            e.stopPropagation();
+            document.getElementById('langMenu').classList.toggle('open');
+        }
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.getElementById('currentFlag').textContent = LANG_INFO[lang].flag;
+            document.getElementById('currentLangLabel').textContent = LANG_INFO[lang].label;
+            ['en','cs','es','de'].forEach(l => {
+                const opt = document.querySelector(`[data-lang="${l}"]`);
+                const check = document.getElementById('check-' + l);
+                if (opt) opt.classList.toggle('active', l === lang);
+                if (check) check.style.display = (l === lang) ? 'inline' : 'none';
+            });
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+                    if (key.startsWith('desc_p')) {
+                        el.innerHTML = TRANSLATIONS[lang][key];
+                    } else {
+                        el.textContent = TRANSLATIONS[lang][key];
+                    }
+                }
+            });
+            updateAllPrices();
+            if (document.getElementById('productDetailModal').classList.contains('active') && detailProductId) {
+                const wasOpen = detailProductId;
+                closeProductDetail();
+                setTimeout(() => openProductDetail(wasOpen), 50);
+            }
+            if (document.getElementById('checkoutModal').classList.contains('active')) {
+                updateOrderSummary();
+                const discountBtn = document.getElementById('discountBtn');
+                if (!discountBtn.disabled) {
+                    discountBtn.textContent = TRANSLATIONS[lang].discount_apply;
+                }
+            }
+        }
+
+        function updateAllPrices() {
+            document.querySelectorAll('[data-price]').forEach(el => {
+                const usd = parseInt(el.getAttribute('data-price'));
+                el.textContent = formatPrice(usd);
+            });
+            document.querySelectorAll('[data-price-display]').forEach(el => {
+                const usd = parseInt(el.getAttribute('data-price-display'));
+                el.textContent = formatPrice(usd);
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('langMenu');
+            if (menu && !menu.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+
+        function getFinalPrice() {
+            if (!discountApplied) return currentProduct.price;
+            return Math.round(currentProduct.price * (1 - DISCOUNT_PERCENT / 100));
+        }
+
+        function showPaypalError(msg) {
+            const el = document.getElementById('paypalError');
+            el.textContent = msg; el.style.display = 'block';
+        }
+        function hidePaypalError() {
+            const el = document.getElementById('paypalError');
+            el.style.display = 'none'; el.textContent = '';
+        }
+
+        function collectCustomer() {
+            return {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName:  document.getElementById('lastName').value.trim(),
+                email:     document.getElementById('email').value.trim(),
+                phone:     document.getElementById('phone').value.trim(),
+                street:    document.getElementById('street').value.trim(),
+                city:      document.getElementById('city').value.trim(),
+                zip:       document.getElementById('zip').value.trim(),
+                country:   document.getElementById('country').value
+            };
+        }
+
+        function sendOrderNotification(orderLog) {
+            const c = orderLog.customer;
+            const payload = {
+                _subject: `🛒 NOVÁ OBJEDNÁVKA BESTxShop — ${orderLog.product} ($${orderLog.amount})`,
+                _template: 'table',
+                _captcha: 'false',
+                _replyto: c.email || NOTIFICATION_EMAIL,
+                'Produkt': orderLog.product,
+                'Kód produktu': orderLog.productId,
+                'Cena (USD)': '$' + orderLog.amount,
+                'Sleva použita': orderLog.discountApplied ? 'ANO (10% — BestKukirin10)' : 'NE',
+                'Stav platby': orderLog.status,
+                'Jméno': c.firstName,
+                'Příjmení': c.lastName,
+                'E-mail zákazníka': c.email,
+                'Telefon': c.phone,
+                'Ulice a číslo': c.street,
+                'Město': c.city,
+                'PSČ': c.zip,
+                'Země': c.country,
+                'PayPal e-mail': orderLog.payerEmail,
+                'PayPal Order ID': orderLog.orderId,
+                'PayPal Capture ID': orderLog.captureId,
+                'Datum a čas': orderLog.timestamp
+            };
+            return fetch('https://formsubmit.co/ajax/' + NOTIFICATION_EMAIL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json())
+            .then(res => { console.log('📧 Order notification sent:', res); })
+            .catch(err => { console.error('📧 Order notification FAILED:', err); });
+        }
+
+        /* 🆕 AKTIVAČNÍ TEST */
+        (function() {
+            const isLocal = location.protocol === 'file:' ||
+                            location.hostname === 'localhost' ||
+                            location.hostname === '127.0.0.1' ||
+                            location.hostname === '';
+            if (isLocal) {
+                document.getElementById('testActivateBtn').classList.add('show');
+            }
+        })();
+
+        function runActivationTest() {
+            const btn = document.getElementById('testActivateBtn');
+            const toast = document.getElementById('testActivateToast');
+            btn.disabled = true;
+            btn.textContent = '⏳ Odesílám...';
+            toast.className = 'test-activate-toast show';
+            toast.textContent = 'Odesílám aktivační e-mail na ' + NOTIFICATION_EMAIL + '...';
+
+            fetch('https://formsubmit.co/ajax/' + NOTIFICATION_EMAIL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    _subject: '✅ AKTIVACE BESTxShop — klikněte na Activate',
+                    _template: 'table',
+                    _captcha: 'false',
+                    'Typ': 'Aktivace notifikačního systému BESTxShop',
+                    'Info': 'Toto NENÍ reálná objednávka. Klikněte prosím na odkaz "Activate" v tomto e-mailu (může být ve SPAMu).',
+                    'Akce': 'Po aktivaci Vám budou chodit automatické notifikace o každé nové objednávce.',
+                    'Čas': new Date().toLocaleString('cs-CZ')
+                })
+            })
+            .then(r => r.json())
+            .then(d => {
+                toast.className = 'test-activate-toast show success';
+                toast.innerHTML = '✅ <strong>Odesláno!</strong><br><br>Zkontroluj <strong>' + NOTIFICATION_EMAIL + '</strong> (i SPAM) a klikni na <strong>Activate</strong>.';
+                btn.textContent = '✅ Otestováno — zkontroluj Gmail';
+                btn.style.background = 'linear-gradient(135deg,#16a34a,#22c55e)';
+                setTimeout(() => { toast.classList.remove('show'); }, 15000);
+            })
+            .catch(e => {
+                toast.className = 'test-activate-toast show error';
+                toast.textContent = '❌ Chyba: ' + e.message + ' — Zkus to znovu.';
+                btn.disabled = false;
+                btn.textContent = '🔧 Zkusit znovu';
+                setTimeout(() => { toast.classList.remove('show'); }, 8000);
+            });
+        }
+
+        function openProductDetail(productId) {
+            const data = PRODUCT_DETAILS[productId];
+            if (!data) return;
+            detailProductId = productId;
+            document.getElementById('detailImage').src = data.image;
+            document.getElementById('detailImage').alt = data.title;
+            document.getElementById('detailCategory').textContent = TRANSLATIONS[currentLang][data.categoryKey] || data.categoryKey;
+            document.getElementById('detailTitle').textContent = data.title;
+            document.getElementById('detailSubtitle').textContent = TRANSLATIONS[currentLang][data.subtitleKey] || data.subtitleKey;
+            document.getElementById('detailRatingScore').textContent = data.ratingScore;
+            document.getElementById('detailRatingCount').textContent = TRANSLATIONS[currentLang][data.ratingCountKey] || data.ratingCountKey;
+            document.getElementById('detailPriceNow').textContent = formatPrice(data.price);
+            const priceWasEl = document.getElementById('detailPriceWas');
+            const priceTagEl = document.getElementById('detailPriceTag');
+            if (data.priceOld) {
+                priceWasEl.textContent = formatPrice(data.priceOld);
+                priceWasEl.style.display = '';
+            } else {
+                priceWasEl.textContent = ''; priceWasEl.style.display = 'none';
+            }
+            if (data.discount) {
+                priceTagEl.textContent = data.discount;
+                priceTagEl.style.display = '';
+            } else {
+                priceTagEl.textContent = ''; priceTagEl.style.display = 'none';
+            }
+            const benefitsEl = document.getElementById('detailBenefits');
+            benefitsEl.innerHTML = '';
+            data.benefits.forEach(b => {
+                const div = document.createElement('div');
+                div.className = 'detail-modal-benefit';
+                div.innerHTML = `
+                    <div class="detail-modal-benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    ${TRANSLATIONS[currentLang][b.key] || b.key}
+                `;
+                benefitsEl.appendChild(div);
+            });
+            const paramsEl = document.getElementById('detailParamsGrid');
+            paramsEl.innerHTML = '';
+            data.params.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'param-card';
+                div.innerHTML = `<div class="param-value">${p.v}</div><div class="param-label">${TRANSLATIONS[currentLang][p.l] || p.l}</div>`;
+                paramsEl.appendChild(div);
+            });
+            const buyBtn = document.getElementById('detailBuyBtn');
+            buyBtn.innerHTML = `
+                <span>${TRANSLATIONS[currentLang].buy_now}</span> — ${formatPrice(data.price)}
+                <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            `;
+            buyBtn.onclick = function() {
+                closeProductDetail();
+                setTimeout(() => openCheckout(detailProductId), 250);
+            };
+            const modal = document.getElementById('productDetailModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            modal.scrollTop = 0;
+        }
+
+        function closeProductDetail() {
+            const modal = document.getElementById('productDetailModal');
+            modal.classList.remove('active');
+            if (!document.getElementById('checkoutModal').classList.contains('active')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function openCheckout(productId) {
+            currentProduct = PRODUCTS[productId] || PRODUCTS['IP17'];
+            discountApplied = false;
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('formView').style.display = 'block';
+            document.getElementById('successView').classList.remove('active');
+            hidePaypalError();
+            const codeInput = document.getElementById('discountCode');
+            const discountBtn = document.getElementById('discountBtn');
+            const discountBox = document.getElementById('discountBox');
+            const discountMsg = document.getElementById('discountMsg');
+            codeInput.value = ''; codeInput.disabled = false;
+            discountBtn.disabled = false;
+            discountBtn.textContent = TRANSLATIONS[currentLang].discount_apply;
+            discountBox.classList.remove('applied');
+            discountMsg.className = 'discount-msg'; discountMsg.textContent = '';
+            updateOrderSummary();
+            initPayPal();
+        }
+
+        function closeCheckout() {
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.remove('active');
+            if (!document.getElementById('productDetailModal').classList.contains('active')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function updateOrderSummary() {
+            document.getElementById('summaryProductName').textContent = currentProduct.fullName;
+            const priceEl = document.getElementById('summaryPrice');
+            if (discountApplied) {
+                const finalPrice = getFinalPrice();
+                priceEl.innerHTML = formatPrice(finalPrice) +
+                    '<small>' + (currentLang === 'cs' ? 'Ušetříte' : currentLang === 'es' ? 'Ahorra' : currentLang === 'de' ? 'Sie sparen' : 'Save') + ' ' + formatPrice(currentProduct.price - finalPrice) + ' (10%)</small>' +
+                    '<small class="strike">' + (currentLang === 'cs' ? 'Původně' : currentLang === 'es' ? 'Antes' : currentLang === 'de' ? 'Vorher' : 'Was') + ' ' + formatPrice(currentProduct.price) + '</small>';
+            } else {
+                priceEl.textContent = formatPrice(currentProduct.price);
+            }
+        }
+
+        function applyDiscount() {
+            const input = document.getElementById('discountCode');
+            const btn = document.getElementById('discountBtn');
+            const box = document.getElementById('discountBox');
+            const msg = document.getElementById('discountMsg');
+            const code = input.value.trim();
+            if (code.toUpperCase() === DISCOUNT_CODE.toUpperCase()) {
+                discountApplied = true;
+                box.classList.add('applied');
+                msg.className = 'discount-msg success';
+                const txt = { en: '10% discount successfully applied.', cs: 'Sleva 10 % byla úspěšně aplikována.', es: 'Descuento del 10% aplicado correctamente.', de: '10% Rabatt erfolgreich angewendet.' }[currentLang];
+                const rm = { en:'Remove', cs:'Odebrat', es:'Eliminar', de:'Entfernen' }[currentLang];
+                msg.innerHTML = '✓ ' + txt + ' <button type="button" class="discount-remove" onclick="removeDiscount()">' + rm + '</button>';
+                input.disabled = true;
+                btn.disabled = true;
+                btn.textContent = '✓ ' + { en:'Active', cs:'Aktivní', es:'Activo', de:'Aktiv' }[currentLang];
+                updateOrderSummary();
+            } else if (code === '') {
+                discountApplied = false;
+                box.classList.remove('applied');
+                msg.className = 'discount-msg'; msg.textContent = '';
+                updateOrderSummary();
+            } else {
+                discountApplied = false;
+                box.classList.remove('applied');
+                msg.className = 'discount-msg error';
+                msg.textContent = '✕ ' + { en:'Invalid discount code. Please try again.', cs:'Neplatný slevový kód. Zkuste to znovu.', es:'Código de descuento inválido. Inténtelo de nuevo.', de:'Ungültiger Rabattcode. Bitte versuchen Sie es erneut.' }[currentLang];
+                updateOrderSummary();
+            }
+        }
+
+        function removeDiscount() {
+            discountApplied = false;
+            const input = document.getElementById('discountCode');
+            const btn = document.getElementById('discountBtn');
+            const box = document.getElementById('discountBox');
+            const msg = document.getElementById('discountMsg');
+            input.value = ''; input.disabled = false;
+            btn.disabled = false; btn.textContent = TRANSLATIONS[currentLang].discount_apply;
+            box.classList.remove('applied');
+            msg.className = 'discount-msg'; msg.textContent = '';
+            updateOrderSummary();
+        }
+
+        function initPayPal() {
+            if (paypalRendered) return;
+            if (!window.paypal) {
+                paypalRetries++;
+                if (paypalRetries > 60) {
+                    document.getElementById('paypal-button-container').innerHTML =
+                        '<div class="paypal-error">Failed to load PayPal payment gateway. Please refresh the page.</div>';
+                    return;
+                }
+                setTimeout(initPayPal, 250);
+                return;
+            }
+            paypalRendered = true;
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '';
+
+            paypal.Buttons({
+                style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'paypal', height: 48 },
+                onClick: function (data, actions) {
+                    hidePaypalError();
+                    const form = document.getElementById('checkoutForm');
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return actions.reject();
+                    }
+                    return actions.resolve();
+                },
+                createOrder: function (data, actions) {
+                    hidePaypalError();
+                    const finalPrice = getFinalPrice();
+                    return actions.order.create({
+                        intent: 'CAPTURE',
+                        purchase_units: [{
+                            description: currentProduct.fullName + ' — digital manual',
+                            custom_id: 'BESTXSHOP-' + currentProduct.id,
+                            amount: { currency_code: 'USD', value: finalPrice.toFixed(2) }
+                        }],
+                        application_context: {
+                            brand_name: 'BESTxShop',
+                            locale: 'en-US',
+                            shipping_preference: 'NO_SHIPPING',
+                            user_action: 'PAY_NOW'
+                        }
+                    });
+                },
+                onApprove: function (data, actions) {
+                    hidePaypalError();
+                    return actions.order.capture().then(function (details) {
+                        const captureId = details.purchase_units?.[0]?.payments?.captures?.[0]?.id || details.id;
+                        const amount    = details.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value || '?';
+                        const payerEmail = details.payer?.email_address || '?';
+
+                        console.log('═══════════════════════════════════════════');
+                        console.log('✅ PAYMENT COMPLETED');
+                        console.log('   Order ID:     ', details.id);
+                        console.log('   Capture ID:   ', captureId);
+                        console.log('   Amount:       ', amount, 'USD');
+                        console.log('   Product:      ', currentProduct.fullName);
+                        console.log('   PayPal email: ', payerEmail);
+                        console.log('   Status:       ', details.status);
+                        console.log('═══════════════════════════════════════════');
+
+                        const orderLog = {
+                            orderId: details.id,
+                            captureId: captureId,
+                            amount: amount,
+                            currency: 'USD',
+                            product: currentProduct.fullName,
+                            productId: currentProduct.id,
+                            discountApplied: discountApplied,
+                            payerEmail: payerEmail,
+                            customer: collectCustomer(),
+                            status: details.status,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        try {
+                            const orders = JSON.parse(localStorage.getItem('bestxshop_orders') || '[]');
+                            orders.push(orderLog);
+                            localStorage.setItem('bestxshop_orders', JSON.stringify(orders));
+                        } catch (e) {
+                            console.warn('localStorage unavailable:', e);
+                        }
+
+                        sendOrderNotification(orderLog);
+
+                        document.getElementById('txnId').textContent = details.id;
+                        document.getElementById('formView').style.display = 'none';
+                        document.getElementById('successView').classList.add('active');
+                        document.getElementById('checkoutModal').scrollTop = 0;
+                    });
+                },
+                onError: function (err) {
+                    console.error('PayPal error:', err);
+                    showPaypalError('Payment could not be completed. Please try again.');
+                },
+                onCancel: function () {
+                    hidePaypalError();
+                }
+            }).render('#paypal-button-container');
+        }
+
+        function resetForm() {
+            document.getElementById('checkoutForm').reset();
+            document.getElementById('txnId').textContent = '—';
+            discountApplied = false;
+            const codeInput = document.getElementById('discountCode');
+            const discountBtn = document.getElementById('discountBtn');
+            const discountBox = document.getElementById('discountBox');
+            const discountMsg = document.getElementById('discountMsg');
+            codeInput.value = ''; codeInput.disabled = false;
+            discountBtn.disabled = false; discountBtn.textContent = TRANSLATIONS[currentLang].discount_apply;
+            discountBox.classList.remove('applied');
+            discountMsg.className = 'discount-msg'; discountMsg.textContent = '';
+            hidePaypalError();
+        }
+
+        document.getElementById('checkoutModal').addEventListener('click', function (e) {
+            if (e.target === this) closeCheckout();
+        });
+        document.getElementById('productDetailModal').addEventListener('click', function (e) {
+            if (e.target === this) closeProductDetail();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('checkoutModal').classList.contains('active')) {
+                    closeCheckout();
+                } else if (document.getElementById('productDetailModal').classList.contains('active')) {
+                    closeProductDetail();
+                }
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        document.getElementById('discountCode').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                applyDiscount();
+            }
+        });
+
+        updateAllPrices();
+    </script>
+
+</body>
+</html>
